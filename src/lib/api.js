@@ -19,7 +19,18 @@ const request = async (path, options = {}) => {
     },
   });
 
-  const body = await response.json().catch(() => ({}));
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    throw new Error(`API returned ${contentType || "an unknown response type"}.`);
+  }
+
+  let body;
+  try {
+    body = await response.json();
+  } catch {
+    throw new Error("API returned invalid JSON.");
+  }
+
   if (!response.ok) throw new Error(body.error || `Request failed (${response.status})`);
   return body;
 };
