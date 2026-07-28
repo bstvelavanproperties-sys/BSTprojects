@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480" width="600" height="480">
+  <circle cx="300" cy="240" r="200" fill="#fdf1f1"/>
+  <path d="M210 300 330 190l120 110v130H210z" fill="#ffffff"/>
+  <path d="M330 178 462 300H198z" fill="#dc1c24" opacity="0.85"/>
+  <rect x="290" y="345" width="70" height="85" fill="#dc1c24" opacity="0.3"/>
+  <rect x="235" y="320" width="46" height="42" fill="#14315f" opacity="0.18"/>
+  <rect x="372" y="320" width="46" height="42" fill="#14315f" opacity="0.18"/>
+  <circle cx="132" cy="392" r="34" fill="none" stroke="#14315f" stroke-width="12" opacity="0.35"/>
+  <path d="M160 392h96v-20h18v20h16v22h-16v18h-18v-18h-96z" fill="#14315f" opacity="0.35"/>
+  <text x="300" y="462" text-anchor="middle" font-family="Nunito, system-ui, sans-serif"
+        font-size="20" font-weight="800" fill="#dc1c24" opacity="0.7">FIND YOUR DREAM PROPERTY</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Photograph coming soon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e2e5ea"/>
+      <stop offset="1" stop-color="#b6bcc7"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="655" cy="95" r="42" fill="#ffffff" opacity="0.45"/>
+
+    <path d="M250 230 400 130 550 230v115H250z" fill="#ffffff" opacity="0.5"/>
+    <rect x="370" y="270" width="60" height="75" fill="#ffffff" opacity="0.8"/>
+    <rect x="290" y="255" width="52" height="45" fill="#ffffff" opacity="0.7"/>
+    <rect x="458" y="255" width="52" height="45" fill="#ffffff" opacity="0.7"/>
+  <rect y="345" width="800" height="155" fill="#14315f" opacity="0.14"/>
+  <text x="400" y="425" text-anchor="middle" font-family="Nunito, system-ui, sans-serif"
+        font-size="26" font-weight="800" fill="#14315f" opacity="0.62">Photograph coming soon</text>
+</svg>

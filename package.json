@@ -1,0 +1,33 @@
+{
+  "name": "bst-velavan-properties",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n CLIENT,API -c cyan,magenta \"npm:dev:client\" \"npm:dev:server\"",
+    "dev:client": "vite",
+    "dev:server": "node --watch server/index.js",
+    "assets": "node scripts/make-placeholders.js",
+    "sitemap": "node scripts/make-sitemap.js",
+    "build": "npm run sitemap && vite build",
+    "preview": "vite preview",
+    "start": "NODE_ENV=production node server/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.2.1",
+    "mongoose": "^8.17.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.18.1"
+  },
+  "devDependencies": {
+    "@fontsource/nunito": "^5.1.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^9.2.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^7.0.0"
+  }
+}

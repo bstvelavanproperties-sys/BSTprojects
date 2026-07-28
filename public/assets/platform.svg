@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 900" width="800" height="900">
+  <defs>
+    <linearGradient id="p" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9fc4e8"/><stop offset="1" stop-color="#dceaf7"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="900" fill="url(#p)"/>
+  <circle cx="640" cy="150" r="70" fill="#ffffff" opacity="0.5"/>
+  <path d="M250 520 400 380l150 140v250H250z" fill="#ffffff" opacity="0.55"/>
+  <rect x="360" y="600" width="80" height="170" fill="#dc1c24" opacity="0.5"/>
+  <rect x="285" y="560" width="55" height="50" fill="#14315f" opacity="0.25"/>
+  <rect x="460" y="560" width="55" height="50" fill="#14315f" opacity="0.25"/>
+  <rect x="120" y="770" width="560" height="14" rx="7" fill="#14315f" opacity="0.2"/>
+  <text x="400" y="850" text-anchor="middle" font-family="Nunito, system-ui, sans-serif"
+        font-size="26" font-weight="800" fill="#14315f" opacity="0.5">Your next home</text>
+</svg>

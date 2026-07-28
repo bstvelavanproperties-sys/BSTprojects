@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+@import "@fontsource/nunito/400.css";
+@import "@fontsource/nunito/600.css";
+@import "@fontsource/nunito/700.css";
+@import "@fontsource/nunito/800.css";
+@import "@fontsource/nunito/900.css";
+
+/* ---------------------------------------------------------------------------
+   BST Velavan Properties design tokens.
+   Swap these values to re-skin the entire site.
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: #fdf1f1;
+  --color-brand-100: #fbdcdd;
+  --color-brand-200: #f6b6b8;
+  --color-brand-300: #f08f93;
+  --color-brand-400: #e8474e;
+  --color-brand-500: #dc1c24;
+  --color-brand-600: #b8151c;
+  --color-brand-700: #8f1016;
+
+  --color-navy-500: #244a80;
+  --color-navy-600: #1b3a67;
+  --color-navy-700: #14315f;
+  --color-navy-900: #0d2143;
+
+  --color-gold-400: #ffd35c;
+  --color-gold-500: #ffc629;
+
+  --color-tint: #fdf1f1;
+  --color-surface: #f4f4f4;
+  --color-muted: #6b7280;
+
+  --color-residential: #3fa84a;
+  --color-commercial: #d6338e;
+  --color-chat: #25d366;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white font-sans text-[15px] text-muted antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-extrabold text-navy-700;
+    letter-spacing: -0.02em;
+  }
+
+  /* The reference sets headings very large and centered. */
+  .h-section {
+    font-size: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+    line-height: 1.08;
+  }
+
+  .h-hero {
+    font-size: clamp(2.25rem, 1.1rem + 4.6vw, 4.25rem);
+    line-height: 1.06;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Tailwind v4 can't @apply a custom class, so variants share one grouped selector. */
+  .btn,
+  .btn-brand,
+  .btn-outline,
+  .btn-navy {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold
+           transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-brand {
+    @apply bg-brand-500 text-white hover:bg-brand-600;
+  }
+
+  .btn-outline {
+    @apply border-2 border-brand-500 bg-white text-brand-500 hover:bg-brand-50;
+  }
+
+  .btn-navy {
+    @apply bg-navy-700 text-white hover:bg-navy-900;
+  }
+
+  .card {
+    @apply rounded-2xl bg-white shadow-[0_4px_24px_rgba(20,49,95,0.08)];
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-navy-700
+           placeholder:text-gray-400 focus:border-brand-500 focus:ring-0 focus:outline-none;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5
+           text-sm font-bold text-navy-700 transition-colors hover:border-brand-300
+           hover:text-brand-500;
+  }
+
+  .pill-active {
+    @apply border-brand-500 bg-brand-50 text-brand-500;
+  }
+
+  /* Hides content visually but keeps it for assistive tech. */
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    @apply sr-only;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Motion. Every animation here is disabled by the reduced-motion block below.
+-------------------------------------------------------------------------- */
+@keyframes preload-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes preload-fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes preload-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes preload-rise {
+  from {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+  to {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+}
+
+/* Scroll-reveal: elements start shifted, and useReveal adds .is-visible. */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.step-in {
+  animation: step-in 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Horizontal scrollers (carousel, filter tabs) without a visible scrollbar. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* Reveal content immediately rather than leaving it stuck at opacity 0. */
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

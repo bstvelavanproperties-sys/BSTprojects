@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Plot">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e6dbc9"/>
+      <stop offset="1" stop-color="#c7b299"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="655" cy="95" r="42" fill="#ffffff" opacity="0.45"/>
+
+      <rect x="180" y="215" width="440" height="130" fill="none" stroke="#ffffff" stroke-width="4"
+            opacity="0.55" stroke-dasharray="18 12"/>
+      <circle cx="180" cy="215" r="7" fill="#ffffff" opacity="0.7"/>
+      <circle cx="620" cy="215" r="7" fill="#ffffff" opacity="0.7"/>
+      <circle cx="180" cy="345" r="7" fill="#ffffff" opacity="0.7"/>
+      <circle cx="620" cy="345" r="7" fill="#ffffff" opacity="0.7"/>
+  <rect y="345" width="800" height="155" fill="#14315f" opacity="0.14"/>
+  <text x="400" y="425" text-anchor="middle" font-family="Nunito, system-ui, sans-serif"
+        font-size="26" font-weight="800" fill="#14315f" opacity="0.62">Plot</text>
+</svg>

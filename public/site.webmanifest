@@ -1,0 +1,17 @@
+{
+  "name": "BST Velavan Properties",
+  "short_name": "BST Velavan",
+  "description": "Your trusted partner in property management, buying and selling.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#DC1C24",
+  "icons": [
+    {
+      "src": "/assets/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

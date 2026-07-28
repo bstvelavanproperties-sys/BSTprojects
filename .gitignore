@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+.DS_Store
+*.log
+__pycache__/
+
+# Local client-commercial documents and their generators.
+/BST_Velavan_Properties_Budget_and_Milestone_Plan.docx
+/BST_Velavan_Properties_Simple_Budget_and_Milestone_Plan.docx
+/scripts/generate_budget_plan.py
+/scripts/generate_simple_budget_plan.py
