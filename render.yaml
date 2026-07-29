@@ -1,0 +1,60 @@
+services:
+  - type: web
+    name: bst-velavan
+    runtime: node
+    # Paid tier: the instance stays warm (no cold starts) and the service gets
+    # static outbound IPs, which is what lets Atlas be locked to those instead of
+    # being opened to the whole internet.
+    plan: starter
+    # One service serves both the site and the API. The build must produce dist/,
+    # which is gitignored, so it is built here on every deploy.
+    #
+    # --include=dev is required: NODE_ENV=production below makes npm skip
+    # devDependencies, and vite/tailwind live there — without it the build fails
+    # with "vite: not found".
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Set in the Render dashboard — secrets must not live in the repo.
+      - key: MONGODB_URI
+        sync: false
+      # Admin sign-in credentials — set both, or /admin stays unprotected.
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_TOKEN
+        sync: false
+      # The public address of this service, e.g. https://bstvelavanproperties.com
+      # Drives canonical URLs, share previews and sitemap.xml. Set it once the
+      # domain is attached — a wrong value silently breaks link previews.
+      - key: SITE_ORIGIN
+        sync: false
+      # Only needed for an EXTRA browser origin. This service's own origin is
+      # always allowed, so leave unset unless a second domain calls the API.
+      - key: CLIENT_ORIGIN
+        sync: false
+      # Cloudinary uploads. Server-side only — the secret never reaches the
+      # browser, and uploads are signed per request behind the admin login.
+      # Read at runtime, so changing these needs a restart, not a rebuild.
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      # Optional lead-notification email (Resend).
+      - key: RESEND_API_KEY
+        sync: false
+      - key: LEAD_NOTIFY_EMAIL
+        sync: false
+      - key: LEAD_FROM_EMAIL
+        sync: false
+      # Optional Google Analytics 4 — also baked in at build time.
+      - key: VITE_GA_MEASUREMENT_ID
+        sync: false

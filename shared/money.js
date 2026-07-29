@@ -21,14 +21,27 @@ export const formatINR = (value) => {
 export const formatFullINR = (value) =>
   Number.isFinite(Number(value)) ? `₹${Number(value).toLocaleString("en-IN")}` : "";
 
+export const PRICE_ON_REQUEST = "Price on Request";
+
+// A listing withholds its price when the agent ticks "hide price", or when no price
+// was entered at all — price is optional. Both cases render identically.
+export const isPriceOnRequest = (property) =>
+  Boolean(property?.hidePrice) || !(Number(property?.price) > 0);
+
 // The reference renders prices in several shapes:
 //   "₹2.30 Cr Per Acre" · "Per Flat ₹80 L Total Price 2.40 Cr" · "₹30 K Per Month"
-export const priceParts = (property) => ({
-  prefix: property.pricePrefix || "",
-  amount: formatINR(property.price),
-  suffix: property.priceSuffix || "",
-  note: property.priceNote || "",
-});
+// Withheld prices drop the prefix/suffix/note too — "Per Acre" alongside
+// "Price on Request" reads as an error.
+export const priceParts = (property) =>
+  isPriceOnRequest(property)
+    ? { prefix: "", amount: PRICE_ON_REQUEST, suffix: "", note: "", onRequest: true }
+    : {
+        prefix: property.pricePrefix || "",
+        amount: formatINR(property.price),
+        suffix: property.priceSuffix || "",
+        note: property.priceNote || "",
+        onRequest: false,
+      };
 
 export const priceText = (property) => {
   const { prefix, amount, suffix, note } = priceParts(property);

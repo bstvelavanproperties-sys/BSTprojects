@@ -1,0 +1,374 @@
+@import "tailwindcss";
+
+@import "@fontsource/nunito/400.css";
+@import "@fontsource/nunito/600.css";
+@import "@fontsource/nunito/700.css";
+@import "@fontsource/nunito/800.css";
+@import "@fontsource/nunito/900.css";
+
+/* ---------------------------------------------------------------------------
+   BST Velavan Properties design tokens.
+   Swap these values to re-skin the entire site.
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: #fdf1f1;
+  --color-brand-100: #fbdcdd;
+  --color-brand-200: #f6b6b8;
+  --color-brand-300: #f08f93;
+  --color-brand-400: #e8474e;
+  --color-brand-500: #dc1c24;
+  --color-brand-600: #b8151c;
+  --color-brand-700: #8f1016;
+
+  --color-navy-500: #244a80;
+  --color-navy-600: #1b3a67;
+  --color-navy-700: #14315f;
+  --color-navy-900: #0d2143;
+
+  --color-gold-400: #ffd35c;
+  --color-gold-500: #ffc629;
+
+  --color-tint: #fdf1f1;
+  --color-surface: #f4f4f4;
+  --color-muted: #6b7280;
+
+  --color-residential: #3fa84a;
+  --color-commercial: #d6338e;
+  --color-chat: #25d366;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white font-sans text-[15px] text-muted antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-extrabold text-navy-700;
+    letter-spacing: -0.02em;
+  }
+
+  /* The reference sets headings very large and centered. */
+  .h-section {
+    font-size: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+    line-height: 1.08;
+  }
+
+  .h-hero {
+    font-size: clamp(2.25rem, 1.1rem + 4.6vw, 4.25rem);
+    line-height: 1.06;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Tailwind v4 can't @apply a custom class, so variants share one grouped selector. */
+  .btn,
+  .btn-brand,
+  .btn-outline,
+  .btn-navy {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold
+           transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-brand {
+    @apply bg-brand-500 text-white hover:bg-brand-600;
+  }
+
+  .btn-outline {
+    @apply border-2 border-brand-500 bg-white text-brand-500 hover:bg-brand-50;
+  }
+
+  .btn-navy {
+    @apply bg-navy-700 text-white hover:bg-navy-900;
+  }
+
+  .card {
+    @apply rounded-2xl bg-white shadow-[0_4px_24px_rgba(20,49,95,0.08)];
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-navy-700
+           placeholder:text-gray-400 focus:border-brand-500 focus:ring-0 focus:outline-none;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5
+           text-sm font-bold text-navy-700 transition-colors hover:border-brand-300
+           hover:text-brand-500;
+  }
+
+  .pill-active {
+    @apply border-brand-500 bg-brand-50 text-brand-500;
+  }
+
+  /* Hides content visually but keeps it for assistive tech. */
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    @apply sr-only;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Motion. Every animation here is disabled by the reduced-motion block below.
+-------------------------------------------------------------------------- */
+@keyframes preload-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes preload-fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes preload-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes preload-rise {
+  from {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+  to {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+}
+
+/* Home hero: a lightweight, animated real-estate cityscape. */
+@keyframes hero-camera-drift {
+  0% {
+    transform: scale(1.03) translate3d(-1.8%, -0.3%, 0);
+  }
+  100% {
+    transform: scale(1.15) translate3d(1.8%, 0.7%, 0);
+  }
+}
+
+@keyframes hero-grid-drift {
+  to {
+    background-position:
+      56px 56px,
+      56px 56px;
+  }
+}
+
+@keyframes hero-cloud-drift {
+  to {
+    transform: translateX(1750px);
+  }
+}
+
+@keyframes hero-pin-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes hero-pin-pulse {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.35);
+  }
+  80%,
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes hero-aurora-pulse {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes hero-light-sweep {
+  0% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  55%,
+  100% {
+    transform: translateX(330%) skewX(-18deg);
+  }
+}
+
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  background: #0d2143;
+}
+
+.hero-backdrop__image {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  max-width: none;
+  height: 120%;
+  object-fit: cover;
+  animation: hero-camera-drift 9s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.hero-backdrop__aurora {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 84% 25%, rgba(220, 28, 36, 0.28), transparent 25%),
+    radial-gradient(circle at 16% 20%, rgba(82, 145, 213, 0.32), transparent 28%);
+  animation: hero-aurora-pulse 5s ease-in-out infinite;
+}
+
+.hero-backdrop__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent 72%);
+  animation: hero-grid-drift 14s linear infinite;
+}
+
+.hero-backdrop__scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-cloud--one {
+  animation: hero-cloud-drift 44s linear infinite;
+}
+
+.hero-cloud--two {
+  animation: hero-cloud-drift 58s -31s linear infinite reverse;
+}
+
+.hero-property-pin {
+  animation: hero-pin-float 3s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.hero-property-pin__pulse {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.75);
+  stroke-width: 2;
+  animation: hero-pin-pulse 2s ease-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.hero-backdrop__light-sweep {
+  position: absolute;
+  top: -15%;
+  bottom: -15%;
+  left: -18%;
+  width: 22%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.055),
+    rgba(255, 255, 255, 0.015),
+    transparent
+  );
+  animation: hero-light-sweep 7s ease-in-out infinite;
+}
+
+.hero-backdrop__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(7, 24, 52, 0.28), rgba(8, 27, 57, 0.48)),
+    radial-gradient(ellipse at center, rgba(13, 33, 67, 0.08) 0%, rgba(7, 20, 43, 0.28) 100%);
+}
+
+/* Scroll-reveal: elements start shifted, and useReveal adds .is-visible. */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.step-in {
+  animation: step-in 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Horizontal scrollers (carousel, filter tabs) without a visible scrollbar. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* Reveal content immediately rather than leaving it stuck at opacity 0. */
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

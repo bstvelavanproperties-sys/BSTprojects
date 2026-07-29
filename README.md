@@ -24,10 +24,31 @@ the front end falls back to browser storage, so everything is demonstrable with 
 
 ## Production
 
+**One service.** A single Node process serves the website and the API from the same origin —
+there is no separate frontend host.
+
 ```bash
 npm run build   # regenerates sitemap.xml, then builds to dist/
-npm start       # Express serves dist/ on :5000
+npm start       # Express serves dist/ AND /api on :5000
 ```
+
+Deployment is `render.yaml` (Blueprint). It runs `npm install --include=dev && npm run build`,
+then `npm start`. The `--include=dev` matters: `NODE_ENV=production` makes npm skip
+devDependencies, and Vite lives there, so without it the build fails with `vite: not found`.
+
+Set these in the Render dashboard — everything else is optional:
+
+| Variable | Why |
+|---|---|
+| `SITE_ORIGIN` | The public domain. Wrong value breaks share previews and `sitemap.xml` silently. |
+| `MONGODB_URI` | Without it the site runs on seed data and forgets every change on restart. |
+| `ADMIN_USERNAME` / `ADMIN_PASSWORD` | Set both, or `/admin` is unprotected. |
+| `CLOUDINARY_CLOUD_NAME` / `_API_KEY` / `_API_SECRET` | Photo and video uploads. Server-side only; read at runtime, so a change needs a restart, not a rebuild. |
+
+`CLIENT_ORIGIN` is *not* needed in production. The service's own origin always passes CORS; that
+variable only adds extra origins, which local dev needs because Vite runs on a different port.
+
+Single-origin hosting is what makes the server-rendered share previews work at all — see below.
 
 ## The four things other property sites don't have
 
@@ -48,7 +69,7 @@ price, then shows what's actually available in that range:
 
 **Branded preloader** — the "Vel" mark draws itself over a rising skyline, on **every page load and
 every internal navigation**. Two timings, both constants at the top of
-`src/components/Preloader.jsx`:
+`frontend/src/components/Preloader.jsx`:
 
 ```js
 const FIRST_MS = 1400;  // initial load and every reload — full animation
@@ -70,8 +91,23 @@ affordability, services, about, contact, property-wanted, FAQs.
 **Listings** — filter by keyword, city, type, category, bedrooms and price; sort by price/area/date;
 paginated. All filter state lives in the URL, so results are shareable and back/forward works.
 
-**Property detail** — image gallery with lightbox, spec table, amenities, map, EMI calculator,
+**Property detail** — media gallery with lightbox, spec table, amenities, map, EMI calculator,
 enquiry form, similar properties, shortlist and share.
+
+**Uploads are signed, not unsigned.** The browser asks `POST /api/uploads/signature` — which
+requires an admin session — for a short-lived Cloudinary signature, then posts the file straight to
+Cloudinary. So the API secret never reaches the browser, the file bytes never pass through this
+server, and no one can upload to the account by reading the page source. The destination folder
+(`Images/` or `Videos/`) is chosen server-side and is *part of the signed payload*, so a tampered
+client cannot redirect uploads elsewhere — Cloudinary rejects any parameter that wasn't signed.
+No upload preset is involved.
+
+**Media limits — 5 photos and 2 videos per property.** Both numbers live in `shared/media.js` and
+are enforced twice: the admin uploader stops early and says why, and the API trims anything over
+the cap (extras are dropped, not rejected, so a CSV row with six photos imports five rather than
+failing). Videos are delivered untransformed — any transform makes Cloudinary derive a rendition
+on first request, and until that finishes the URL 423s, which a browser shows as a video that
+won't play. The thumbnail is a still of the first frame, and videos only download when played.
 
 **Admin (`/admin`)** — property CRUD, CSV import/export, lead pipeline with statuses, homepage copy
 editing, health indicator.
@@ -86,9 +122,10 @@ a demo. Replace it with a real login before the client manages live inventory. L
 writes are open — fine locally, not on a public URL.
 
 **Share previews are rendered server-side.** WhatsApp, Facebook and Instagram never run JavaScript,
-so a normal React app shows a generic card for every listing. `server/meta.js` injects each
+so a normal React app shows a generic card for every listing. `backend/meta.js` injects each
 property's real title, price, image and JSON-LD into the HTML before sending. This only works under
-`npm start` — deploying `dist/` to a static host silently reverts every listing to the generic card.
+`npm start`. Serving `dist/` from a static host instead would silently revert every listing to the
+generic card — which is the main reason this is deployed as one Node service rather than split.
 
 **Area is normalised.** Listings mix sq.ft, ground, cent and acre. `areaSqft` is derived on save
 (1 ground = 2,400 sq.ft) and is the only field used for sorting and filtering, so a 2-ground plot
@@ -106,15 +143,15 @@ at their URL, preserving the SEO value and acting as social proof. Hard delete i
 
 These are marked `TODO` in the code and don't block anything:
 
-1. **`src/data/brand.js`** — email, head/branch office addresses and social URLs weren't in the
+1. **`frontend/src/data/brand.js`** — email, head/branch office addresses and social URLs weren't in the
    supplied flyer. Everything the site renders is in this one file.
-2. **Logo** — `public/assets/logo.svg` is a placeholder. Drop the real "Vel" mark at
-   `public/assets/logo.png` and change the `logo:` line in `brand.js`.
-3. **Property photographs** — `public/assets/properties/*.svg` are generated placeholders
-   (`npm run assets` regenerates them). Real photos should go through Cloudinary; set
-   `VITE_CLOUDINARY_CLOUD_NAME` and `VITE_CLOUDINARY_PRESET` and the admin form will resize by URL.
-   Local disk uploads are deliberately not supported — most Node hosts have ephemeral filesystems
-   and would lose the photo library on every redeploy.
+2. **Logo** — `frontend/public/assets/logo.svg` is a placeholder. Drop the real "Vel" mark at
+   `frontend/public/assets/logo.png` and change the `logo:` line in `brand.js`.
+3. **Property photographs** — `frontend/public/assets/properties/*.svg` are generated placeholders
+   (`npm run assets` regenerates them). Set the three `CLOUDINARY_*` variables to let admins
+   upload. The returned secure URLs are saved with the property and resized automatically when
+   displayed. Local disk uploads are deliberately not supported — most Node hosts have ephemeral
+   filesystems and would lose the photo library on every redeploy.
 4. **`SITE_ORIGIN`** — set to the real domain so canonical URLs and share previews point correctly.
 5. **Resend** — set `RESEND_API_KEY` and `LEAD_NOTIFY_EMAIL` to turn on lead emails. Without them
    enquiries still save and still open WhatsApp.
@@ -122,25 +159,46 @@ These are marked `TODO` in the code and don't block anything:
 ## Layout
 
 ```
-server/          Express API
+backend/         Express — serves the API and, in production, the built site
   index.js       routes, in-memory fallback, production static + meta injection
   query.js       the single filter normaliser both storage paths use
   meta.js        share-preview tag rendering
+  auth.js        admin sign-in, session tokens
   notify.js      lead email
   models/        Property, Lead, SiteContent
   data/          seed listings, homepage copy, reviews
-shared/          imported by BOTH server and client — one source of truth
+frontend/        React SPA — built to dist/ and served by backend/
+  index.html     Vite entry document
+  public/        static assets, robots.txt, generated sitemap.xml
+  src/
+    data/brand.js  every brand string
+    lib/           api client, formatting, browser storage, page meta,
+                   compare state, scroll-reveal hook, Cloudinary upload
+    components/    header, footer, cards, forms, sections, preloader, compare
+    pages/         home, listings, detail, matchmaker, affordability, static
+    AdminApp.jsx   admin dashboard
+shared/          imported by BOTH backend and frontend — one source of truth
   units.js       area conversion
   money.js       ₹ formatting and price composition
-src/
-  data/brand.js  every brand string
-  lib/           api client, formatting, browser storage, page meta,
-                 compare state, scroll-reveal hook
-  components/    header, footer, cards, forms, sections, preloader, compare
-  pages/         home, listings, detail, matchmaker, affordability, static
-  AdminApp.jsx   admin dashboard
+  propertyImages.js  per-type fallback images
 scripts/         placeholder asset + sitemap generators
+dist/            build output (gitignored) — built on deploy and served by
+                 backend/index.js; absent locally until `npm run build`
 ```
+
+Three deliberate cross-boundary links, so keep them in mind when moving files:
+
+- `shared/` is imported by both sides with plain relative paths (`../../shared/…` from
+  `backend/`, `../../../shared/…` from `frontend/src/lib/`). No build step, no alias.
+- `frontend/src/lib/api.js` lazy-imports `backend/data/properties.js` and `backend/query.js`
+  so the SPA stays browsable when the API is unreachable. Vite splits these into their own
+  chunks; they are not loaded on the happy path.
+- `scripts/make-sitemap.js` reads the same backend seed data, which is why the sitemap
+  can't drift from the listings that exist.
+
+`vite.config.js` stays at the repo root with `root: "frontend"`. It also pins `envDir` to
+the repo root — without that Vite would look for `.env` inside `frontend/`, find nothing,
+and every `VITE_*` var would build as `undefined` rather than erroring.
 
 ## Verification
 

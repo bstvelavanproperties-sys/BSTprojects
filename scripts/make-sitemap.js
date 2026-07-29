@@ -3,9 +3,10 @@
 import { writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { properties } from "../server/data/properties.js";
+import { properties } from "../backend/data/properties.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const publicDir = path.join(root, "frontend", "public");
 const origin = (process.env.SITE_ORIGIN || "https://bstvelavanproperties.com").replace(/\/$/, "");
 const today = new Date().toISOString().slice(0, 10);
 
@@ -44,7 +45,7 @@ const entries = [
 ];
 
 writeFileSync(
-  path.join(root, "public", "sitemap.xml"),
+  path.join(publicDir, "sitemap.xml"),
   `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${entries.join("\n")}
