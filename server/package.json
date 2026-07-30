@@ -1,0 +1,24 @@
+{
+  "name": "bst-velavan-server",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "NODE_ENV=production node src/server.js",
+    "check": "for f in $(find src scripts -name '*.js'); do node --check \"$f\" || exit 1; done && echo 'syntax ok'",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "@bstv/shared": "file:../shared",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.2.1",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.17.0"
+  }
+}

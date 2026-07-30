@@ -1,5 +1,5 @@
-// Every brand value the site renders lives here. Nothing else hardcodes a brand string.
-// Values marked TODO were not in the supplied flyer — fill them in and the whole site updates.
+// Every brand value the site renders lives here. Nothing else hardcodes a brand string,
+// so changing a phone number, an office line or a social URL here updates the whole site.
 
 export const brand = {
   name: "BST Velavan Properties",
@@ -22,23 +22,27 @@ export const brand = {
   emails: ["bstvelavanproperties@gmail.com"],
   offices: {
     head: {
-      label: "Head office",
-      lines: ["TODO — head office address", "Chennai, Tamil Nadu"],
-    },
-    branch: {
-      label: "Branch office",
-      lines: ["TODO — branch office address"],
+      label: "Office",
+      lines: [
+        "AG 68, 3rd Cross St, AG Block",
+        "River View Colony, Anna Nagar",
+        "Chennai, Greater Chennai",
+        "Tamil Nadu 600040",
+      ],
     },
   },
   socials: {
-    youtube: "",
-    facebook: "",
-    instagram: "",
+    youtube: "https://www.youtube.com/@bstvelavan",
+    facebook: "https://www.facebook.com/share/1HvQRhdqmA/",
+    instagram: "https://www.instagram.com/bst_velavan",
   },
 
-  // TODO — replace with the supplied red "Vel" mark. Drop the file at
-  // public/assets/logo.png and change this one line.
-  logo: "/assets/logo.svg",
+  // The hexagonal BST monogram on its own, cut from the supplied lockup. The header
+  // and admin sign-in render it at 40-44px beside their own wordmark, so the full
+  // lockup would be illegible there and would repeat the words twice over.
+  logo: "/assets/logo-mark.png",
+  // The complete lockup — mark, wordmark and tagline — for share cards and print.
+  logoFull: "/assets/logo.png",
   origin: "https://bstvelavanproperties.com",
 };
 

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import brand from "../data/brand.js";
+import brand from "../config/brand.js";
 import { fetchProperties } from "../lib/api.js";
 import { formatFullINR, formatINR } from "../lib/format.js";
 import { track } from "../lib/storage.js";

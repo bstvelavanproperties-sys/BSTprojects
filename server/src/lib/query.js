@@ -46,6 +46,9 @@ export const normaliseQuery = (query = {}) => {
     propertyType: oneOf(query.propertyType, PROPERTY_TYPES),
     label: oneOf(query.label, LABELS),
     status: oneOf(query.status, STATUSES),
+    // Opt-in: include sold/rented alongside available. Only the browsing pages and the
+    // admin table set it — see the note in buildMongoFilter.
+    includeClosed: query.includeClosed === "true",
     bedrooms: num(query.bedrooms),
     minPrice: priceScoped ? minPrice : undefined,
     maxPrice: priceScoped ? maxPrice : undefined,
@@ -68,8 +71,17 @@ export const buildMongoFilter = (params) => {
   if (params.bedrooms !== undefined) filter.bedrooms = { $gte: params.bedrooms };
   if (params.featured) filter.featured = true;
 
-  // Sold/rented stay published and reachable by URL, but drop out of default browsing.
-  filter.status = params.status || "available";
+  // Status, in precedence order:
+  //   an explicit ?status=  -> exactly that
+  //   ?includeClosed=true   -> everything, sold and rented included
+  //   otherwise             -> available only
+  //
+  // The default stays available-only on purpose. The homepage carousels, the
+  // affordability results and the matchmaker all query without a status, and none of
+  // them should ever recommend a property that is no longer for sale. Only the browsing
+  // pages and the admin table opt in.
+  if (params.status) filter.status = params.status;
+  else if (!params.includeClosed) filter.status = "available";
 
   if (params.minPrice !== undefined || params.maxPrice !== undefined) {
     filter.price = {};
@@ -87,7 +99,13 @@ export const matchesInMemory = (item, params) => {
   if (params.label && !(item.labels || []).includes(params.label)) return false;
   if (params.featured && !item.featured) return false;
   if (params.bedrooms !== undefined && Number(item.bedrooms || 0) < params.bedrooms) return false;
-  if ((item.status || "available") !== (params.status || "available")) return false;
+  // Mirrors the three-way rule in buildMongoFilter — the two paths must agree.
+  const status = item.status || "available";
+  if (params.status) {
+    if (status !== params.status) return false;
+  } else if (!params.includeClosed && status !== "available") {
+    return false;
+  }
   if (params.minPrice !== undefined && Number(item.price) < params.minPrice) return false;
   if (params.maxPrice !== undefined && Number(item.price) > params.maxPrice) return false;
 
@@ -110,11 +128,18 @@ export const sortInMemory = (items, sort) => {
   }[sort] || ["createdAt", -1];
 
   return [...items].sort((a, b) => {
+    // Available stock first, whatever the chosen sort. A property that sold yesterday
+    // would otherwise sit at the top of "newest" and push live inventory down.
+    const rank = closedRank(a) - closedRank(b);
+    if (rank !== 0) return rank;
+
     const left = field === "createdAt" ? new Date(a[field] || 0).getTime() : Number(a[field] || 0);
     const right = field === "createdAt" ? new Date(b[field] || 0).getTime() : Number(b[field] || 0);
     return (left - right) * direction;
   });
 };
+
+const closedRank = (item) => ((item.status || "available") === "available" ? 0 : 1);
 
 export const paginate = (items, params) => {
   const total = items.length;

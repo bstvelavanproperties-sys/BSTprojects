@@ -1,11 +1,13 @@
 // Generates self-contained placeholder SVGs so the site renders with no external assets.
-// Replace frontend/public/assets/properties/*.svg with the client's real photographs.
+// The logo is NOT among them — assets/logo-mark.png and logo.png are the real brand
+// artwork and must not be overwritten by a generated stand-in.
+// Replace client/public/assets/properties/*.svg with the client's real photographs.
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const assets = path.join(root, "frontend", "public", "assets");
+const assets = path.join(root, "public", "assets");
 const propertyDir = path.join(assets, "properties");
 
 mkdirSync(propertyDir, { recursive: true });
@@ -137,15 +139,5 @@ writeFileSync(
 </svg>`,
 );
 
-// Logo placeholder — replace with the supplied "Vel" mark.
-writeFileSync(
-  path.join(assets, "logo.svg"),
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
-  <circle cx="60" cy="60" r="58" fill="#ffffff" stroke="#dc1c24" stroke-width="4"/>
-  <path d="M28 40h14l12 34 12-34h14L64 90H50z" fill="#dc1c24"/>
-  <path d="M74 34h10v56H74z" fill="#dc1c24"/>
-  <path d="m78 30 16-12v10l-16 12z" fill="#dc1c24"/>
-</svg>`,
-);
 
-console.log(`Wrote ${properties.length} property placeholders + platform, keys, logo.`);
+console.log(`Wrote ${properties.length} property placeholders + platform, keys.`);

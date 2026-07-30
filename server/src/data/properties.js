@@ -1,7 +1,14 @@
-import { toSqft } from "../../shared/units.js";
+import { toSqft } from "@bstv/shared/units.js";
 
-// Seed inventory. Deliberately spans every price-display shape and area unit the card
-// renderer must handle, so the UI is proven without a database.
+// DEVELOPMENT FIXTURE ONLY — this is not real inventory.
+//
+// Twenty-four invented listings that span every price-display shape and area unit
+// the card renderer has to handle, so the UI can be worked on without a database
+// attached. They are served only when NODE_ENV is not "production".
+//
+// These used to be auto-inserted into any empty MongoDB on first connect, which
+// meant a fresh production database came up full of fictional properties. Seeding is
+// now explicit and refuses to run against production — see scripts/seed.js.
 const raw = [
   // ---------- SALE ----------
   {
@@ -498,33 +505,19 @@ export const defaultContent = {
   whatsapp: "919444192708",
 };
 
-export const reviews = [
-  {
-    id: "r1",
-    name: "Saravanan M.",
-    when: "2 months ago",
-    rating: 5,
-    text: "Handled the sale of our Avadi property end to end. Documentation was ready before we even asked, and the buyer was genuine. Straightforward people to deal with.",
-  },
-  {
-    id: "r2",
-    name: "Lakshmi R.",
-    when: "5 months ago",
-    rating: 5,
-    text: "We were nervous about buying a plot without a local contact. They walked us through the title check patiently and never pushed. Would recommend to anyone buying in Chennai.",
-  },
-  {
-    id: "r3",
-    name: "Anand K.",
-    when: "8 months ago",
-    rating: 5,
-    text: "They manage two of my rental properties. Rent lands on time, tenants are screened properly, and small repairs get done without me hearing about them. Exactly what I wanted.",
-  },
-  {
-    id: "r4",
-    name: "Priya S.",
-    when: "1 year ago",
-    rating: 5,
-    text: "Sold our family house through them after a bad experience elsewhere. Honest pricing advice, no inflated promises. The whole thing closed in six weeks.",
-  },
-];
+// Customer reviews shown on the homepage.
+//
+// Deliberately EMPTY. This array previously held four invented testimonials with
+// realistic Indian names, ratings and dates — fabricated social proof, which on a
+// real business domain is both dishonest and, for a regulated trade like property,
+// a genuine liability.
+//
+// TestimonialsSection in client/src/components/TestimonialsSection.jsx returns null while
+// this is empty, so the homepage simply omits the section until there is something
+// true to put in it. To add a real review, paste it in this shape:
+//
+//   { id: "r1", name: "Full Name", when: "2 months ago", rating: 5, text: "…" }
+//
+// Use only reviews you actually received and can point to (a Google Business
+// listing, a WhatsApp message you have consent to quote).
+export const reviews = [];

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { defaultPropertyImage } from "../../../shared/propertyImages.js";
+import { defaultPropertyImage } from "@bstv/shared/propertyImages.js";
 import { cloudinaryPoster, cloudinaryUrl, isVideoUrl } from "../lib/format.js";
 import { ChevronLeft, ChevronRight, Close, Play } from "./Icons.jsx";
 

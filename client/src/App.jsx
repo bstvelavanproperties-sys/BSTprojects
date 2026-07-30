@@ -1,48 +1,18 @@
-import { useEffect } from "react";
-import { Outlet, Route, Routes, useLocation } from "react-router-dom";
-import Header from "./components/Header.jsx";
-import Footer from "./components/Footer.jsx";
+import { Route, Routes } from "react-router-dom";
+import Layout from "./components/Layout.jsx";
 import Preloader from "./components/Preloader.jsx";
-import { ScrollTopFab, WhatsAppFab } from "./components/Fabs.jsx";
-import { CompareBar, ComparePanel } from "./components/Compare.jsx";
-import { CompareProvider } from "./lib/CompareContext.jsx";
+import CompareProvider from "./context/CompareProvider.jsx";
 import Home from "./pages/Home.jsx";
 import Listings from "./pages/Listings.jsx";
 import PropertyDetail from "./pages/PropertyDetail.jsx";
 import Matchmaker from "./pages/Matchmaker.jsx";
 import Affordability from "./pages/Affordability.jsx";
-import { About, Contact, Faqs, NotFound, PropertyWanted, Services } from "./pages/Static.jsx";
-import { track } from "./lib/storage.js";
-
-function Layout() {
-  const location = useLocation();
-
-  useEffect(() => {
-    track("page_view", { path: location.pathname });
-  }, [location.pathname]);
-
-  return (
-    <div className="flex min-h-screen flex-col">
-      <a
-        href="#main"
-        className="sr-only-focusable absolute left-4 top-4 z-[70] rounded-lg bg-brand-500 px-4 py-2 font-bold text-white"
-      >
-        Skip to content
-      </a>
-
-      <Header />
-      <main id="main" className="flex-1">
-        <Outlet />
-      </main>
-      <Footer />
-
-      <WhatsAppFab />
-      <ScrollTopFab />
-      <CompareBar />
-      <ComparePanel />
-    </div>
-  );
-}
+import Services from "./pages/Services.jsx";
+import PropertyWanted from "./pages/PropertyWanted.jsx";
+import About from "./pages/About.jsx";
+import Contact from "./pages/Contact.jsx";
+import Faqs from "./pages/Faqs.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 export default function App() {
   return (

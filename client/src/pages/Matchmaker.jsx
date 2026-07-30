@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import brand, { propertyTypes } from "../data/brand.js";
+import brand, { propertyTypes } from "../config/brand.js";
 import { fetchCities, fetchProperties, submitLead } from "../lib/api.js";
-import { formatINR } from "../lib/format.js";
 import { track } from "../lib/storage.js";
 import PropertyCard from "../components/PropertyCard.jsx";
-import { whatsappHref } from "../components/Fabs.jsx";
+import { whatsappHref } from "../lib/whatsapp.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { ArrowRight, ChevronLeft, Search, WhatsApp } from "../components/Icons.jsx";
 

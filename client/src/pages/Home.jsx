@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import brand, { propertyTypes, typeLabel } from "../data/brand.js";
+import brand, { propertyTypes, typeLabel } from "../config/brand.js";
 import { fetchContent, fetchProperties } from "../lib/api.js";
 import PropertyCard, { PropertyCardSkeleton } from "../components/PropertyCard.jsx";
 import HeroBackdrop from "../components/HeroBackdrop.jsx";
 import HeroSearch from "../components/HeroSearch.jsx";
-import {
-  CategoryCarousel,
-  CtaBand,
-  PlatformSection,
-  SectionHeading,
-  ServicesSection,
-  TestimonialsSection,
-  TrustStrip,
-} from "../components/Sections.jsx";
+import CategoryCarousel from "../components/CategoryCarousel.jsx";
+import CtaBand from "../components/CtaBand.jsx";
+import PlatformSection from "../components/PlatformSection.jsx";
+import SectionHeading from "../components/SectionHeading.jsx";
+import ServicesSection from "../components/ServicesSection.jsx";
+import TestimonialsSection from "../components/TestimonialsSection.jsx";
+import TrustStrip from "../components/TrustStrip.jsx";
 import { MatchmakerTeaser } from "./Matchmaker.jsx";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { useReveal, revealDelay } from "../lib/useReveal.js";

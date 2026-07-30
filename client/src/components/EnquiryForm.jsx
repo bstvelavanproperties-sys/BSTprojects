@@ -1,9 +1,9 @@
 import { useState } from "react";
-import brand from "../data/brand.js";
+import brand from "../config/brand.js";
 import { submitLead } from "../lib/api.js";
 import { track } from "../lib/storage.js";
 import { priceText } from "../lib/format.js";
-import { whatsappHref } from "./Fabs.jsx";
+import { whatsappHref } from "../lib/whatsapp.js";
 import { WhatsApp } from "./Icons.jsx";
 
 const emptyForm = { name: "", phone: "", email: "", message: "", company: "" };
@@ -55,25 +55,42 @@ export default function EnquiryForm({
       propertyTitle: property?.title || "",
     };
 
-    const result = await submitLead(payload);
-    track("lead_submit", { type, property: property?.slug || "" });
+    // submitLead used to swallow failures and answer `{ offline: true }` after
+    // stashing the enquiry in this visitor's own localStorage — somewhere the agency
+    // could never read it. So a total API outage still said "Saved". It now throws,
+    // and an undelivered enquiry is reported as undelivered, with WhatsApp (a
+    // genuinely independent channel) as the recovery path rather than a fiction.
+    let delivered = true;
+    try {
+      await submitLead(payload);
+    } catch (error) {
+      delivered = false;
+      console.warn("Enquiry could not be submitted:", error.message);
+    }
+
+    track("lead_submit", { type, property: property?.slug || "", delivered });
 
     setState({
-      status: "sent",
-      message: result.offline
-        ? "Saved. If it's urgent, message us on WhatsApp — the button below is prefilled."
-        : "Thanks — we'll be in touch shortly.",
+      status: delivered ? "sent" : "undelivered",
+      message: delivered
+        ? "Thanks — we'll be in touch shortly."
+        : "We couldn't reach our server just now, so this hasn't been saved. Your message is ready on WhatsApp — please send it there and it will reach us straight away.",
     });
 
-    // Second delivery channel: the enquiry reaches a phone even if email fails.
+    // Second delivery channel: the enquiry reaches a phone even if the API is down.
     window.open(whatsappHref(whatsappMessage()), "_blank", "noopener");
     setForm({ ...emptyForm, ...Object.fromEntries(extraFields.map((f) => [f.name, ""])) });
   };
 
-  if (state.status === "sent") {
+  if (state.status === "sent" || state.status === "undelivered") {
+    const failed = state.status === "undelivered";
     return (
       <div className={`card ${compact ? "p-6" : "p-7"} text-center`}>
-        <p className="mb-2 text-lg font-extrabold text-navy-700">Enquiry received</p>
+        <p
+          className={`mb-2 text-lg font-extrabold ${failed ? "text-brand-500" : "text-navy-700"}`}
+        >
+          {failed ? "Please send it on WhatsApp" : "Enquiry received"}
+        </p>
         <p className="mb-5 text-sm text-muted">{state.message}</p>
         <a
           href={whatsappHref(whatsappMessage())}

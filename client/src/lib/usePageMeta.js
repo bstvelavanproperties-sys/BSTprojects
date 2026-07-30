@@ -7,7 +7,7 @@ const setTag = (selector, attribute, value) => {
 };
 
 // Client-side title/meta for in-app navigation. Crawlers and WhatsApp are served the
-// real tags by the server (see backend/meta.js) — this keeps the browser tab honest.
+// real tags by the server (see shared/meta.js) — this keeps the browser tab honest.
 export const usePageMeta = ({ title, description, image, canonical }) => {
   useEffect(() => {
     if (title) {

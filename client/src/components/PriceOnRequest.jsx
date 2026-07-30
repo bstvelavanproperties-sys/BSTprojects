@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import brand from "../data/brand.js";
+import brand from "../config/brand.js";
 import { track } from "../lib/storage.js";
-import { whatsappHref } from "./Fabs.jsx";
+import { whatsappHref } from "../lib/whatsapp.js";
 import { Close, Phone, WhatsApp } from "./Icons.jsx";
 
 // Listings can withhold their price to start a conversation instead. Tapping the

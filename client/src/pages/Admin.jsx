@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import brand, { propertyLabels, propertyTypes, typeLabel } from "./data/brand.js";
+import brand, { propertyLabels, propertyTypes, typeLabel } from "../config/brand.js";
 import {
   clearAdminToken,
   createProperty,
@@ -17,22 +17,22 @@ import {
   updateContent,
   updateLeadStatus,
   updateProperty,
-} from "./lib/api.js";
+} from "../lib/api.js";
 import AdminLogin from "./AdminLogin.jsx";
-import { exportLeadsCsv, exportPropertiesCsv, parseCsv, PROPERTY_CSV_FIELDS } from "./lib/storage.js";
-import { formatINR, priceText } from "./lib/format.js";
-import { uploadImageToCloudinary, uploadVideoToCloudinary } from "./lib/cloudinary.js";
-import { AREA_UNITS } from "../../shared/units.js";
-import { defaultPropertyImage } from "../../shared/propertyImages.js";
+import { exportLeadsCsv, exportPropertiesCsv, parseCsv, PROPERTY_CSV_FIELDS } from "../lib/storage.js";
+import { formatINR, priceText } from "../lib/format.js";
+import { uploadImageToCloudinary, uploadVideoToCloudinary } from "../lib/cloudinary.js";
+import { AREA_UNITS } from "@bstv/shared/units.js";
+import { defaultPropertyImage } from "@bstv/shared/propertyImages.js";
 import {
   MAX_PROPERTY_IMAGES,
   MAX_PROPERTY_VIDEOS,
   MAX_IMAGE_BYTES,
   MAX_VIDEO_BYTES,
   formatBytes,
-} from "../../shared/media.js";
-import { cloudinaryPoster } from "./lib/format.js";
-import { ArrowUp, Close, Play } from "./components/Icons.jsx";
+} from "@bstv/shared/media.js";
+import { cloudinaryPoster } from "../lib/format.js";
+import { ArrowUp, Close, Play } from "../components/Icons.jsx";
 
 const LEAD_STATUSES = ["new", "contacted", "scheduled", "visited", "converted", "closed"];
 
@@ -548,7 +548,10 @@ export default function AdminApp() {
 
   const loadProperties = useCallback(
     () =>
-      fetchProperties({ limit: 48, status: "" })
+      // `status: ""` used to be here, which failed validation server-side and silently
+      // fell back to available-only — so a property the operator marked sold vanished
+      // from their own table and could never be edited back.
+      fetchProperties({ limit: 48, includeClosed: "true" })
         .then((data) => setProperties(data.items))
         .catch(() => setProperties([])),
     [],

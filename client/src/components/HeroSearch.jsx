@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { propertyLabels, propertyTypes } from "../data/brand.js";
+import { propertyLabels, propertyTypes } from "../config/brand.js";
 import { fetchCities } from "../lib/api.js";
 import { track } from "../lib/storage.js";
 import { ChevronDown, Home, MapPin, Search, Sliders } from "./Icons.jsx";

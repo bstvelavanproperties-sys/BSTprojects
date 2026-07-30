@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { toSqft } from "../../shared/units.js";
-import { LISTING_TYPES, PROPERTY_TYPES, LABELS, STATUSES } from "../query.js";
+import { toSqft } from "@bstv/shared/units.js";
+import { LISTING_TYPES, PROPERTY_TYPES, LABELS, STATUSES } from "../lib/query.js";
 
 const propertySchema = new mongoose.Schema(
   {
@@ -12,6 +12,16 @@ const propertySchema = new mongoose.Schema(
     propertyType: { type: String, enum: PROPERTY_TYPES, default: "plot", index: true },
     labels: [{ type: String, enum: LABELS }],
     status: { type: String, enum: STATUSES, default: "available", index: true },
+
+    // When status last became sold/rented. Server-derived only — the routes set it on
+    // the transition and never accept it from a request body, so a sale cannot be
+    // backdated by a caller.
+    //
+    // This exists instead of reading `updatedAt` because that moves on every edit: fix
+    // a typo on a sold listing and it would rewind to "selling process". Null means
+    // either still available, or closed before this field existed — shared/saleStage.js
+    // reads the latter as long-since-closed.
+    closedAt: { type: Date, default: null },
 
     // Price display is not a single number on the reference site — see priceSuffix etc.
     // `price` stays numeric so sorting and range filters remain meaningful.

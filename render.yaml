@@ -1,60 +1,81 @@
 services:
   - type: web
-    name: bst-velavan
+    name: bst-velavan-api
     runtime: node
     # Paid tier: the instance stays warm (no cold starts) and the service gets
     # static outbound IPs, which is what lets Atlas be locked to those instead of
     # being opened to the whole internet.
     plan: starter
-    # One service serves both the site and the API. The build must produce dist/,
-    # which is gitignored, so it is built here on every deploy.
-    #
-    # --include=dev is required: NODE_ENV=production below makes npm skip
-    # devDependencies, and vite/tailwind live there — without it the build fails
-    # with "vite: not found".
-    buildCommand: npm install --include=dev && npm run build
+
+    # The repo is an npm-workspaces monorepo; this service is only the server
+    # workspace, so install and start both run inside server/. The @bstv/shared
+    # dependency is declared as `file:../shared`, which npm links from the cloned
+    # repo — that is why shared/ does not need publishing anywhere.
+    rootDir: server
+
+    # API ONLY. The site itself is built and served by Vercel (see
+    # client/vercel.json), so this service no longer runs a build — it does not
+    # produce or serve client/dist. That also means devDependencies (vite, tailwind)
+    # are not needed here, which is why --include=dev is gone.
+    buildCommand: npm install --omit=dev
     startCommand: npm start
     healthCheckPath: /api/health
+
     envVars:
       - key: NODE_ENV
         value: production
-      # Set in the Render dashboard — secrets must not live in the repo.
+
+      # ---------------------------------------------------------------------
+      # REQUIRED. server/src/config/env.js refuses to start without every one of these,
+      # rather than booting into a state that is silently insecure or serves demo
+      # data as real. A deploy missing one fails fast with a readable list in the
+      # Render log instead of coming up subtly wrong.
+      # ---------------------------------------------------------------------
       - key: MONGODB_URI
         sync: false
-      # Admin sign-in credentials — set both, or /admin stays unprotected.
+
+      # Admin sign-in. Must be at least 12 characters and not a known/default
+      # password — /admin is named in robots.txt and gets scanned within hours of a
+      # domain going live.
       - key: ADMIN_USERNAME
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
+
+      # Signs admin session tokens. Render generates a strong value automatically.
+      # Do NOT leave this unset: auth.js would fall back to deriving the key from
+      # your admin password, which turns any leaked token into an offline crack of
+      # that password. Rotating it signs everyone out — the intended panic button.
       - key: SESSION_SECRET
         generateValue: true
-      - key: ADMIN_TOKEN
-        sync: false
-      # The public address of this service, e.g. https://bstvelavanproperties.com
-      # Drives canonical URLs, share previews and sitemap.xml. Set it once the
-      # domain is attached — a wrong value silently breaks link previews.
+
+      # Public address of the SITE — the Vercel/custom domain, NOT this service.
+      # Drives canonical URLs, share previews and sitemap.xml.
       - key: SITE_ORIGIN
         sync: false
-      # Only needed for an EXTRA browser origin. This service's own origin is
-      # always allowed, so leave unset unless a second domain calls the API.
+
+      # Browser origins allowed to call this API. This is now a real access-control
+      # boundary, because the frontend lives on a different origin than this service.
+      # Comma-separated, no trailing slashes, e.g.
+      #   https://bstvelavanproperties.com,https://www.bstvelavanproperties.com
+      # Add the Vercel preview domain too if you test against previews.
       - key: CLIENT_ORIGIN
         sync: false
-      # Cloudinary uploads. Server-side only — the secret never reaches the
-      # browser, and uploads are signed per request behind the admin login.
-      # Read at runtime, so changing these needs a restart, not a rebuild.
+
+      # ---------------------------------------------------------------------
+      # OPTIONAL. Absent is fine; HALF-configured is rejected at boot.
+      # ---------------------------------------------------------------------
+      # Cloudinary uploads. Server-side only — the secret never reaches the browser,
+      # and each upload is signed per request behind the admin login. Read at
+      # runtime, so changing these needs a restart, not a rebuild.
+      #
+      # Also set a max file size in the Cloudinary console (Settings → Upload). The
+      # upload API has no max_file_size parameter, so that console setting is the
+      # only real ceiling — see the note in server/src/lib/uploads.js.
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY
         sync: false
       - key: CLOUDINARY_API_SECRET
         sync: false
-      # Optional lead-notification email (Resend).
-      - key: RESEND_API_KEY
-        sync: false
-      - key: LEAD_NOTIFY_EMAIL
-        sync: false
-      - key: LEAD_FROM_EMAIL
-        sync: false
-      # Optional Google Analytics 4 — also baked in at build time.
-      - key: VITE_GA_MEASUREMENT_ID
-        sync: false
+

@@ -1,6 +1,12 @@
 node_modules
-dist
+
+# Build output now lands inside the client workspace.
+client/dist
+
+# One .env at the repo root, shared by both workspaces. A pattern without a slash
+# matches at any depth, so a stray client/.env or server/.env is covered too.
 .env
+
 .DS_Store
 *.log
 __pycache__/

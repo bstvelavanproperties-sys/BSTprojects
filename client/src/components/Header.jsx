@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import brand from "../data/brand.js";
+import brand from "../config/brand.js";
 import { Facebook, Home, Instagram, Menu, Close, YouTube } from "./Icons.jsx";
 
 const navItems = [

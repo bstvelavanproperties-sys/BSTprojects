@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import brand from "../data/brand.js";
+import brand from "../config/brand.js";
 
 // ---------------------------------------------------------------------------
 // Timings — the two knobs worth touching.

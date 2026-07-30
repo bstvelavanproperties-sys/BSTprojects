@@ -1,0 +1,10 @@
+{
+  "name": "@bstv/shared",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Code imported by BOTH the client and the server, so a price, an area unit or a share-preview tag can never render two different ways depending on who drew it. Linked into each package with file:../shared — no build step, these are plain ES modules.",
+  "exports": {
+    "./*": "./*"
+  }
+}

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import brand, { propertyLabels, propertyTypes } from "../data/brand.js";
+import brand, { propertyLabels, propertyTypes } from "../config/brand.js";
 import { fetchCities, fetchProperties } from "../lib/api.js";
 import { formatINR } from "../lib/format.js";
 import { track } from "../lib/storage.js";
@@ -74,9 +74,21 @@ export default function Listings({ fixedListingType, heading }) {
     let cancelled = false;
     setState((prev) => ({ ...prev, loading: true }));
 
-    fetchProperties(query)
-      .then((data) => !cancelled && setState({ ...data, loading: false }))
-      .catch(() => !cancelled && setState({ items: [], total: 0, page: 1, pages: 1, loading: false }));
+    // Browsing is the one surface that shows sold and rented stock — a closed sale is
+    // proof the agency delivers. The API ranks them after available listings, so live
+    // inventory still leads. Kept out of the URL: it is a property of this page, not a
+    // filter the visitor set.
+    fetchProperties({ ...query, includeClosed: "true" })
+      .then((data) => !cancelled && setState({ ...data, loading: false, failed: false }))
+      // Distinguished from an empty result on purpose. fetchProperties used to answer
+      // with bundled demo listings when the API was unreachable, so an outage looked
+      // like a healthy catalogue; now that it throws, "no matches" and "we couldn't
+      // reach the server" must not render as the same screen either.
+      .catch(
+        () =>
+          !cancelled &&
+          setState({ items: [], total: 0, page: 1, pages: 1, loading: false, failed: true }),
+      );
 
     return () => {
       cancelled = true;
@@ -363,6 +375,24 @@ export default function Listings({ fixedListingType, heading }) {
                     <PropertyCard property={property} />
                   </div>
                 ))}
+              </div>
+            ) : state.failed ? (
+              <div className="card p-14 text-center">
+                <p className="mb-2 text-lg font-extrabold text-brand-500">
+                  Listings are unavailable
+                </p>
+                <p className="mb-6 text-sm text-muted">
+                  We couldn't load the catalogue just now. Please try again in a moment — or call
+                  us and we'll talk you through what's available.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <button type="button" onClick={() => update({})} className="btn-brand">
+                    Try again
+                  </button>
+                  <a href={`tel:${brand.phones[0].replace(/\s/g, "")}`} className="btn-outline">
+                    Call {brand.phones[0]}
+                  </a>
+                </div>
               </div>
             ) : (
               <div className="card p-14 text-center">

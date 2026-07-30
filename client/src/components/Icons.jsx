@@ -266,26 +266,3 @@ export const Villa = (p) => (
     <path d="M6 16h4M16 16h2" />
   </Svg>
 );
-
-export const iconMap = {
-  shield: Shield,
-  users: Users,
-  doc: Doc,
-  thumb: Thumb,
-  building: Building,
-  rupee: Rupee,
-  tools: Tools,
-  "home-buy": Home,
-  "home-sell": Building,
-  "home-rent": Home,
-};
-
-// One icon per property type, so the category carousel isn't six identical tiles.
-export const propertyTypeIcons = {
-  plot: LandPlot,
-  villa: Villa,
-  apartment: Building,
-  "independent-house": Home,
-  "commercial-space": Building,
-  "farm-house-land": Trees,
-};

@@ -1,6 +1,6 @@
-import { AREA_UNITS, unitLabel } from "../../../shared/units.js";
-import { formatFullINR, formatINR, isPriceOnRequest, priceParts, priceText } from "../../../shared/money.js";
-import { defaultPropertyImage } from "../../../shared/propertyImages.js";
+import { AREA_UNITS, unitLabel } from "@bstv/shared/units.js";
+import { formatFullINR, formatINR, isPriceOnRequest, priceParts, priceText } from "@bstv/shared/money.js";
+import { defaultPropertyImage } from "@bstv/shared/propertyImages.js";
 
 export { AREA_UNITS, unitLabel, formatINR, formatFullINR, isPriceOnRequest, priceParts, priceText };
 

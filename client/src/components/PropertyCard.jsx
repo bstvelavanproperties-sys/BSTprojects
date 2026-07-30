@@ -1,23 +1,23 @@
 import { Link } from "react-router-dom";
+import { saleStage } from "@bstv/shared/saleStage.js";
 import { formatArea, priceParts, propertyImage } from "../lib/format.js";
-import { CompareToggle } from "./Compare.jsx";
+import CompareToggle from "./CompareToggle.jsx";
 import { Bed, Bath, MapPin, Ruler } from "./Icons.jsx";
 import PriceOnRequest from "./PriceOnRequest.jsx";
+import SaleStageMark from "./SaleStageMark.jsx";
 
 const labelStyle = {
   commercial: "bg-commercial",
   residential: "bg-residential",
 };
 
-const statusStyle = {
-  sold: "bg-navy-700",
-  rented: "bg-navy-700",
-};
-
 export default function PropertyCard({ property }) {
   const { prefix, amount, suffix, note, onRequest } = priceParts(property);
   const area = formatArea(property);
-  const closed = property.status === "sold" || property.status === "rented";
+  const stage = saleStage(property);
+  // Only a finished sale drains the colour out of the photograph — a deal still in
+  // progress is live inventory as far as the visitor is concerned.
+  const settled = stage === "closed";
 
   return (
     <article className="card group relative flex h-full flex-col overflow-hidden transition-shadow hover:shadow-[0_10px_36px_rgba(20,49,95,0.14)]">
@@ -31,10 +31,16 @@ export default function PropertyCard({ property }) {
           src={propertyImage(property, 640)}
           alt=""
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+            settled ? "grayscale" : ""
+          }`}
         />
 
-        <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+        <div
+          className={`absolute left-3 flex flex-wrap gap-1.5 ${
+            stage === "processing" ? "top-10" : "top-3"
+          }`}
+        >
           {(property.labels || []).map((label) => (
             <span
               key={label}
@@ -45,12 +51,9 @@ export default function PropertyCard({ property }) {
               {label}
             </span>
           ))}
-          {closed && (
-            <span className={`rounded px-2.5 py-1 text-[11px] font-bold uppercase text-white ${statusStyle[property.status]}`}>
-              {property.status}
-            </span>
-          )}
         </div>
+
+        <SaleStageMark property={property} />
       </Link>
 
       {/* Sits outside the link so it doesn't navigate when clicked. */}

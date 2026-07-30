@@ -1,6 +1,6 @@
 import { useState } from "react";
-import brand from "./data/brand.js";
-import { adminLogin } from "./lib/api.js";
+import brand from "../config/brand.js";
+import { adminLogin } from "../lib/api.js";
 
 export default function AdminLogin({ onSuccess }) {
   const [form, setForm] = useState({ username: "", password: "" });

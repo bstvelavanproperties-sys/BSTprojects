@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import brand, { propertyTypes } from "../data/brand.js";
+import brand, { propertyTypes } from "../config/brand.js";
 import { fetchCities } from "../lib/api.js";
 import { ChevronRight, Facebook, Instagram, Mail, Phone, YouTube } from "./Icons.jsx";
 
@@ -48,7 +48,7 @@ export default function Footer() {
       <div className="container-page grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <h3 className="mb-5 text-lg font-extrabold text-white">Office Address</h3>
-          {[brand.offices.head, brand.offices.branch].map((office) => (
+          {Object.values(brand.offices).map((office) => (
             <div key={office.label} className="mb-5 last:mb-0">
               <p className="mb-1 text-sm text-white/50">{office.label}:</p>
               {office.lines.map((line) => (

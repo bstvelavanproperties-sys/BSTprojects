@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import brand, { typeLabel } from "../data/brand.js";
+import brand, { typeLabel } from "../config/brand.js";
 import { fetchProperty, fetchSimilar } from "../lib/api.js";
 import { formatArea, listingTypeLabel, priceParts, priceText, propertyImage } from "../lib/format.js";
 import { getSaved, toggleSaved, track } from "../lib/storage.js";
@@ -8,10 +8,11 @@ import Gallery from "../components/Gallery.jsx";
 import EmiCalculator from "../components/EmiCalculator.jsx";
 import EnquiryForm from "../components/EnquiryForm.jsx";
 import PriceOnRequest from "../components/PriceOnRequest.jsx";
+import SaleStageMark from "../components/SaleStageMark.jsx";
 import PropertyCard from "../components/PropertyCard.jsx";
-import { whatsappHref } from "../components/Fabs.jsx";
+import { whatsappHref } from "../lib/whatsapp.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
-import { Bath, Bed, Heart, MapPin, Phone, Ruler, Share, WhatsApp } from "../components/Icons.jsx";
+import { Heart, MapPin, Phone, Share, WhatsApp } from "../components/Icons.jsx";
 
 const Spec = ({ label, value }) =>
   value ? (
@@ -86,7 +87,6 @@ export default function PropertyDetail() {
 
   const { prefix, amount, suffix, note, onRequest } = priceParts(property);
   const isSaved = saved.includes(property.slug);
-  const closed = property.status === "sold" || property.status === "rented";
   const shareUrl = `${window.location.origin}/real-estate/${property.slug}`;
 
   const onShare = async () => {
@@ -140,12 +140,9 @@ export default function PropertyDetail() {
                       {label}
                     </span>
                   ))}
-                  {closed && (
-                    <span className="rounded bg-navy-700 px-2.5 py-1 text-[11px] font-bold uppercase text-white">
-                      {property.status}
-                    </span>
-                  )}
                 </div>
+
+                <SaleStageMark property={property} variant="banner" />
 
                 <h1 className="mb-2 text-3xl leading-tight font-extrabold text-navy-700 sm:text-4xl">
                   {property.title}

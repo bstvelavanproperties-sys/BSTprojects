@@ -2,8 +2,9 @@
 // that sets its <head> at runtime shows a generic card for every listing. We rewrite the
 // static HTML between the <!--meta--> markers before serving it.
 
-import { isPriceOnRequest, priceText as priceLine } from "../shared/money.js";
-import { defaultPropertyImage } from "../shared/propertyImages.js";
+import { isPriceOnRequest, priceText as priceLine } from "./money.js";
+import { defaultPropertyImage } from "./propertyImages.js";
+import { saleStage, stageLabel } from "./saleStage.js";
 
 const escapeHtml = (value) =>
   String(value ?? "")
@@ -18,7 +19,13 @@ export const renderMetaTags = (property, { origin, siteName }) => {
   const imagePath = property.images?.[0] || defaultPropertyImage(property.propertyType);
   const image = imagePath.startsWith("http") ? imagePath : `${origin}${imagePath}`;
 
-  const title = `${property.title} — ${priceLine(property)} | ${siteName}`;
+  // A forwarded WhatsApp link outlives the sale. Leading with the outcome stops someone
+  // chasing a property that closed weeks ago — and a wall of [SOLD] cards is the best
+  // advertisement an agency has.
+  const stage = saleStage(property);
+  const stamp = stage === "closed" ? `[${stageLabel(property)}] ` : "";
+
+  const title = `${stamp}${property.title} — ${priceLine(property)} | ${siteName}`;
   const description =
     (property.description || "").slice(0, 200) ||
     `${property.title} in ${property.locationText}. ${priceLine(property)}.`;
