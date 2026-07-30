@@ -1,85 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://localhost:5000/</loc>
+    <loc>https://bstvelavan.com/</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/properties</loc>
+    <loc>https://bstvelavan.com/properties</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/buy</loc>
+    <loc>https://bstvelavan.com/buy</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/rent</loc>
+    <loc>https://bstvelavan.com/rent</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/services</loc>
+    <loc>https://bstvelavan.com/services</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/property-wanted</loc>
+    <loc>https://bstvelavan.com/property-wanted</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/about</loc>
+    <loc>https://bstvelavan.com/about</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/contact</loc>
+    <loc>https://bstvelavan.com/contact</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/faqs</loc>
+    <loc>https://bstvelavan.com/faqs</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/real-estate/anna-nagar-main</loc>
+    <loc>https://bstvelavan.com/real-estate/anna-nagar-main</loc>
     <lastmod>2026-07-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/real-estate/plot-for-sale-in-palavakkam</loc>
+    <loc>https://bstvelavan.com/real-estate/plot-for-sale-in-palavakkam</loc>
     <lastmod>2026-07-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/real-estate/house-for-sale-in-avadi-kamarajanagar</loc>
+    <loc>https://bstvelavan.com/real-estate/house-for-sale-in-avadi-kamarajanagar</loc>
     <lastmod>2026-07-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/real-estate/luxury-villa-for-sale-in-ecr</loc>
+    <loc>https://bstvelavan.com/real-estate/luxury-villa-for-sale-in-ecr</loc>
     <lastmod>2026-07-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:5000/real-estate/apartment-for-sale-in-bangalore-whitefield</loc>
+    <loc>https://bstvelavan.com/real-estate/apartment-for-sale-in-bangalore-whitefield</loc>
     <lastmod>2026-07-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

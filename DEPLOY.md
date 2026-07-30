@@ -34,8 +34,8 @@ Write down your API origin once and use the same string in all three places:
 3. **`CLIENT_ORIGIN`** (Render env) — the API refuses browser requests from origins
    not listed here.
 
-`client/vercel.json` currently allows `https://api.bstvelavanproperties.com` and
-`https://bst-velavan.onrender.com`. If your API ends up anywhere else, edit it.
+`client/vercel.json` currently allows `https://api.bstvelavan.com` and
+`https://bst-velavan-api.onrender.com`. If your API ends up anywhere else, edit it.
 
 ---
 
@@ -83,8 +83,8 @@ MONGODB_URI       # Atlas connection string
 ADMIN_USERNAME    # not "admin" — it is guessed first
 ADMIN_PASSWORD    # 12+ chars, not a known password
 SESSION_SECRET    # HS256 key for the admin JWTs; Render generates it, leave it alone
-SITE_ORIGIN       # https://bstvelavanproperties.com  (the SITE, not this API)
-CLIENT_ORIGIN     # https://bstvelavanproperties.com,https://www.bstvelavanproperties.com
+SITE_ORIGIN       # https://bstvelavan.com  (the SITE, not this API)
+CLIENT_ORIGIN     # https://bstvelavan.com,https://www.bstvelavan.com
 ```
 
 Generate a session secret by hand if you ever need to:
@@ -97,7 +97,7 @@ There is no enquiry-notification channel: leads are written to MongoDB and read 
 the `/admin` lead inbox. Nobody is emailed or messaged when one arrives, so someone
 has to check the inbox — see "Things that will bite you" below.
 
-Then attach a custom domain — `api.bstvelavanproperties.com` is the tidy choice, and
+Then attach a custom domain — `api.bstvelavan.com` is the tidy choice, and
 being a subdomain of the site it keeps the door open to cookie-based sessions later.
 
 ## 4. Vercel (frontend)
@@ -118,8 +118,8 @@ Env vars (locally these live in the same repo-root `.env` as the API's — see
 [`.env.example`](.env.example)):
 
 ```
-VITE_API_BASE_URL=https://api.bstvelavanproperties.com   # no trailing slash
-SITE_ORIGIN=https://bstvelavanproperties.com
+VITE_API_BASE_URL=https://api.bstvelavan.com   # no trailing slash
+SITE_ORIGIN=https://bstvelavan.com
 VITE_GA_MEASUREMENT_ID=G-XXXXXXX                          # optional
 ```
 
@@ -133,21 +133,21 @@ canonical one you picked.
 
 ```bash
 # API is alive and actually talking to Mongo — expect {"ok":true,"database":"connected"}
-curl https://api.bstvelavanproperties.com/api/health
+curl https://api.bstvelavan.com/api/health
 
 # Security headers are present
-curl -sI https://bstvelavanproperties.com | grep -iE "content-security|strict-transport"
+curl -sI https://bstvelavan.com | grep -iE "content-security|strict-transport"
 
 # Admin is locked. Expect 401, NOT a listing.
-curl -X POST https://api.bstvelavanproperties.com/api/properties \
+curl -X POST https://api.bstvelavan.com/api/properties \
   -H 'content-type: application/json' -d '{"title":"probe","city":"probe"}'
 
 # CORS rejects an unknown origin (no access-control-allow-origin in the response)
 curl -sI -H "Origin: https://evil.example" \
-  https://api.bstvelavanproperties.com/api/properties | grep -i access-control
+  https://api.bstvelavan.com/api/properties | grep -i access-control
 
 # Share preview is rendered server-side — expect the listing title, not the generic one
-curl -s https://bstvelavanproperties.com/real-estate/SOME-REAL-SLUG | grep "og:title"
+curl -s https://bstvelavan.com/real-estate/SOME-REAL-SLUG | grep "og:title"
 ```
 
 Finally, sign in at `/admin`, add one real listing, and confirm it appears on `/buy`.

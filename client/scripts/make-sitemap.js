@@ -28,7 +28,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 // and silently find nothing.
 dotenv.config({ path: path.resolve(root, "..", ".env") });
 const publicDir = path.join(root, "public");
-const origin = (process.env.SITE_ORIGIN || "https://bstvelavanproperties.com").replace(/\/$/, "");
+const origin = (process.env.SITE_ORIGIN || "https://bstvelavan.com").replace(/\/$/, "");
 const today = new Date().toISOString().slice(0, 10);
 
 const staticRoutes = [

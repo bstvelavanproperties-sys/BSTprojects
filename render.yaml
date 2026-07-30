@@ -57,7 +57,7 @@ services:
       # Browser origins allowed to call this API. This is now a real access-control
       # boundary, because the frontend lives on a different origin than this service.
       # Comma-separated, no trailing slashes, e.g.
-      #   https://bstvelavanproperties.com,https://www.bstvelavanproperties.com
+      #   https://bstvelavan.com,https://www.bstvelavan.com
       # Add the Vercel preview domain too if you test against previews.
       - key: CLIENT_ORIGIN
         sync: false

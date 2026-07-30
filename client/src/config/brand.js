@@ -43,7 +43,7 @@ export const brand = {
   logo: "/assets/logo-mark.png",
   // The complete lockup — mark, wordmark and tagline — for share cards and print.
   logoFull: "/assets/logo.png",
-  origin: "https://bstvelavanproperties.com",
+  origin: "https://bstvelavan.com",
 };
 
 // Homepage "why us" strip — from the flyer.
