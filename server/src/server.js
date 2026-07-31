@@ -7,6 +7,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { renderMetaTags, injectMeta } from "@bstv/shared/meta.js";
+import { isMetaRoute, renderPageMeta } from "@bstv/shared/pageMeta.js";
 
 import {
   clientOrigins,
@@ -180,7 +181,24 @@ if (indexHtml) {
     return response.type("html").send(injectMeta(indexHtml, tags));
   });
 
-  app.get("*splat", (_request, response) => response.type("html").send(indexHtml));
+  // Static routes get their own title, description, canonical and structured data, the same
+  // way client/api/page.js does it on Vercel — both call renderPageMeta, so the two deploys
+  // cannot drift. brand config is loaded lazily because it lives in the client workspace,
+  // which only exists in this single-service configuration.
+  const brandConfig = await import("../../client/src/config/brand.js").catch(() => null);
+
+  app.get("*splat", (request, response) => {
+    const path = request.path;
+    if (!isMetaRoute(path)) return response.type("html").send(indexHtml);
+
+    const tags = renderPageMeta(path, {
+      origin,
+      siteName,
+      brand: brandConfig?.default,
+      services: brandConfig?.services,
+    });
+    return response.type("html").send(injectMeta(indexHtml, tags));
+  });
 }
 
 // ---------------------------------------------------------------------------

@@ -51,6 +51,14 @@ export default function PropertyCard({ property }) {
               {label}
             </span>
           ))}
+
+          {/* Gold rather than a label colour: this is a curation mark, not a category,
+              and it shares the wrap group so it can never land on the compare toggle. */}
+          {property.nriFriendly && (
+            <span className="rounded bg-gold-500 px-2.5 py-1 text-[11px] font-bold text-navy-900">
+              NRI-friendly
+            </span>
+          )}
         </div>
 
         <SaleStageMark property={property} />

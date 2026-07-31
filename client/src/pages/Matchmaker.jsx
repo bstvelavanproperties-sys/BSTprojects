@@ -5,6 +5,7 @@ import { fetchCities, fetchProperties, submitLead } from "../lib/api.js";
 import { track } from "../lib/storage.js";
 import PropertyCard from "../components/PropertyCard.jsx";
 import { whatsappHref, whatsappNumber } from "../lib/whatsapp.js";
+import { pageMetaFor } from "@bstv/shared/pageMeta.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { ArrowRight, ChevronLeft, Phone, Search, WhatsApp } from "../components/Icons.jsx";
 
@@ -52,11 +53,7 @@ export default function Matchmaker() {
   const [results, setResults] = useState({ items: [], total: 0, loading: false });
   const [lead, setLead] = useState({ name: "", phone: "", sent: false, error: "" });
 
-  usePageMeta({
-    title: `Find My Property — ${brand.name}`,
-    description:
-      "Answer five quick questions and we'll shortlist the properties that actually fit — then send them to your WhatsApp.",
-  });
+  usePageMeta(pageMetaFor("/find-my-property"));
 
   useEffect(() => {
     fetchCities()

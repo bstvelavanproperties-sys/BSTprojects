@@ -10,6 +10,7 @@ const companyLinks = [
   { to: "/find-my-property", label: "Find My Property" },
   { to: "/affordability", label: "What Can I Afford?" },
   { to: "/property-wanted", label: "Property Wanted" },
+  { to: "/nri", label: "NRI Corner" },
   { to: "/services", label: "Services" },
   { to: "/faqs", label: "FAQs" },
   { to: "/about", label: "About Us" },

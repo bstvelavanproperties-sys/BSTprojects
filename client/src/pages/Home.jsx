@@ -7,12 +7,14 @@ import HeroBackdrop from "../components/HeroBackdrop.jsx";
 import HeroSearch from "../components/HeroSearch.jsx";
 import CategoryCarousel from "../components/CategoryCarousel.jsx";
 import CtaBand from "../components/CtaBand.jsx";
+import NriPopup from "../components/NriPopup.jsx";
 import PlatformSection from "../components/PlatformSection.jsx";
 import SectionHeading from "../components/SectionHeading.jsx";
 import ServicesSection from "../components/ServicesSection.jsx";
 import TestimonialsSection from "../components/TestimonialsSection.jsx";
 import TrustStrip from "../components/TrustStrip.jsx";
 import { MatchmakerTeaser } from "./Matchmaker.jsx";
+import { pageMetaFor } from "@bstv/shared/pageMeta.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { useReveal, revealDelay } from "../lib/useReveal.js";
 
@@ -135,10 +137,7 @@ function RentalProperties({ content }) {
 export default function Home() {
   const [content, setContent] = useState({});
 
-  usePageMeta({
-    title: `${brand.name} — ${brand.tagline}`,
-    description: `${brand.headline}. ${brand.subline}`,
-  });
+  usePageMeta(pageMetaFor("/"));
 
   useEffect(() => {
     fetchContent()
@@ -153,6 +152,10 @@ export default function Home() {
 
   return (
     <>
+      {/* Home only, so it stays out of Layout.jsx with the site-wide floating widgets.
+          `content` is already in hand from the fetch above — no second request. */}
+      <NriPopup content={content} />
+
       {/* 2. Hero */}
       <section className="relative isolate overflow-hidden">
         <HeroBackdrop image={heroImage} />

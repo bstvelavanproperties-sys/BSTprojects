@@ -1,16 +1,14 @@
 import brand from "../config/brand.js";
 import EnquiryForm from "../components/EnquiryForm.jsx";
 import PageHero from "../components/PageHero.jsx";
+import { pageMetaFor } from "@bstv/shared/pageMeta.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { track } from "../lib/storage.js";
 import { whatsappHref, whatsappNumber } from "../lib/whatsapp.js";
 import { Mail, MapPin, Phone, WhatsApp } from "../components/Icons.jsx";
 
 export default function Contact() {
-  usePageMeta({
-    title: `Contact Us — ${brand.name}`,
-    description: `Call ${brand.phones[0]} or send an enquiry. ${brand.slogans.find}`,
-  });
+  usePageMeta(pageMetaFor("/contact"));
 
   const phone = brand.phones[0];
   const whatsappMessage = `Hi ${brand.name}, I'd like to talk about a property.`;

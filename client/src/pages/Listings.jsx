@@ -6,6 +6,7 @@ import { formatINR } from "../lib/format.js";
 import { track } from "../lib/storage.js";
 import { whatsappHref, whatsappNumber } from "../lib/whatsapp.js";
 import PropertyCard, { PropertyCardSkeleton } from "../components/PropertyCard.jsx";
+import { pageMetaFor } from "@bstv/shared/pageMeta.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { useReveal, revealDelay } from "../lib/useReveal.js";
 import {
@@ -32,7 +33,10 @@ const SORTS = [
   { value: "area-asc", label: "Area: small to large" },
 ];
 
-export default function Listings({ fixedListingType, heading }) {
+// `metaPath` names which entry in shared/pageMeta.js this route uses. One component serves
+// /properties, /buy and /rent, and each needs its own title — "Property for Sale in Chennai"
+// and "Property for Rent in Chennai" are different searches.
+export default function Listings({ fixedListingType, heading, metaPath = "/properties" }) {
   const [params, setParams] = useSearchParams();
   const [cities, setCities] = useState([]);
   const [state, setState] = useState({ items: [], total: 0, page: 1, pages: 1, loading: true });
@@ -52,6 +56,7 @@ export default function Listings({ fixedListingType, heading }) {
       propertyType: params.get("propertyType") || "",
       label: params.get("label") || "",
       bedrooms: params.get("bedrooms") || "",
+      nriFriendly: params.get("nriFriendly") || "",
       minPrice: params.get("minPrice") || "",
       maxPrice: params.get("maxPrice") || "",
       sort: params.get("sort") || "newest",
@@ -61,10 +66,7 @@ export default function Listings({ fixedListingType, heading }) {
     [params, listingType],
   );
 
-  usePageMeta({
-    title: `${heading || "Properties"} — ${brand.name}`,
-    description: `Browse ${state.total} verified listings with ${brand.name}. ${brand.subline}`,
-  });
+  usePageMeta(pageMetaFor(metaPath));
 
   // Keep the input in sync when the URL changes from outside (nav links, back button).
   useEffect(() => setKeyword(params.get("q") || ""), [params]);
@@ -129,9 +131,15 @@ export default function Listings({ fixedListingType, heading }) {
     setKeyword("");
   };
 
-  const activeCount = ["city", "propertyType", "label", "bedrooms", "minPrice", "maxPrice"].filter(
-    (key) => params.get(key),
-  ).length;
+  const activeCount = [
+    "city",
+    "propertyType",
+    "label",
+    "bedrooms",
+    "nriFriendly",
+    "minPrice",
+    "maxPrice",
+  ].filter((key) => params.get(key)).length;
 
   const goToPage = (page) => {
     update({ page: String(page) });
@@ -305,6 +313,27 @@ export default function Listings({ fixedListingType, heading }) {
                     ))}
                   </select>
                 </div>
+
+                {/* Opt-in narrowing, so it reads as "only these" rather than a
+                    preference that quietly excludes the rest of the catalogue. */}
+                <label className="flex cursor-pointer items-start gap-2.5">
+                  <input
+                    type="checkbox"
+                    checked={query.nriFriendly === "true"}
+                    onChange={(event) =>
+                      update({ nriFriendly: event.target.checked ? "true" : "" })
+                    }
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-brand-500"
+                  />
+                  <span>
+                    <span className="block text-sm font-bold text-navy-700">
+                      NRI-friendly only
+                    </span>
+                    <span className="block text-xs leading-relaxed text-muted">
+                      Listings we can handle end to end for a buyer living abroad.
+                    </span>
+                  </span>
+                </label>
 
                 {/* Price only makes sense once buy-vs-rent is chosen. */}
                 <div>

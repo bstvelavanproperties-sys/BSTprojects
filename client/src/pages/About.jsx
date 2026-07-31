@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
 import brand, { trustPoints } from "../config/brand.js";
 import PageHero from "../components/PageHero.jsx";
+import { pageMetaFor } from "@bstv/shared/pageMeta.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { iconMap } from "../components/iconMaps.js";
 
 export default function About() {
-  usePageMeta({
-    title: `About Us — ${brand.name}`,
-    description: `${brand.promise} Learn how ${brand.name} works with buyers, sellers and property owners.`,
-  });
+  usePageMeta(pageMetaFor("/about"));
 
   return (
     <>

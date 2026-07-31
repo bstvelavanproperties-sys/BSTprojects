@@ -1,40 +1,13 @@
 import { Link } from "react-router-dom";
-import brand from "../config/brand.js";
+import { faqs } from "@bstv/shared/faqs.js";
+import { pageMetaFor } from "@bstv/shared/pageMeta.js";
 import PageHero from "../components/PageHero.jsx";
 import { usePageMeta } from "../lib/usePageMeta.js";
 
-const faqs = [
-  {
-    q: "Do you charge a fee for helping me find a property?",
-    a: "No. Our search service is free for buyers and tenants. We're paid by the owner on a completed transaction, and we'll always tell you upfront where our commission sits.",
-  },
-  {
-    q: "Are the listings on this site verified?",
-    a: "Yes. Every listing is checked before it goes live — we confirm ownership, look at the title documents and visit the property. Anything we can't verify doesn't get published.",
-  },
-  {
-    q: "What documents should I check before buying?",
-    a: "At minimum: the parent document and sale deed, an encumbrance certificate covering at least 15 years, patta or chitta for land, approved layout plans, and the latest tax receipts. Our documentation team walks you through all of it.",
-  },
-  {
-    q: "Can you manage a property I own but don't live near?",
-    a: "That's exactly what our property management service is for. We handle tenants, rent collection, maintenance and periodic inspections, and send you a regular report.",
-  },
-  {
-    q: "How long does a typical sale take to close?",
-    a: "For a clean title with a ready buyer, six to eight weeks is realistic. Loan approvals and any title corrections are usually what extends it.",
-  },
-  {
-    q: "Do you help with home loans?",
-    a: "We don't lend, but we work with several banks and can introduce you to a manager who handles property loans. The EMI calculator on each listing gives you a rough starting point.",
-  },
-];
-
 export default function Faqs() {
-  usePageMeta({
-    title: `FAQs — ${brand.name}`,
-    description: "Common questions about buying, selling, renting and property management.",
-  });
+  // The questions below are also emitted as FAQPage structured data by shared/pageMeta.js.
+  // Both read the same array, which is what keeps the markup matching the visible page.
+  usePageMeta(pageMetaFor("/faqs"));
 
   return (
     <>

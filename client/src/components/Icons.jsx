@@ -41,6 +41,20 @@ export const Home = (p) => (
   </Svg>
 );
 
+export const Globe = (p) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18" />
+    <path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18Z" />
+  </Svg>
+);
+
+export const Plane = (p) => (
+  <Svg {...p}>
+    <path d="M10.2 13.8 3 11.4l1.6-1.6 3.9.6 3.3-3.3-7-3.5L6.6 2l9.2 2.6 2.5-2.5a2 2 0 1 1 2.8 2.8l-2.5 2.5L21.2 17l-1.6 1.6-3.5-7-3.3 3.3.6 3.9L11.8 20l-1.6-6.2Z" />
+  </Svg>
+);
+
 export const Sliders = (p) => (
   <Svg {...p}>
     <path d="M4 7h10M18 7h2M4 17h4M12 17h8" />

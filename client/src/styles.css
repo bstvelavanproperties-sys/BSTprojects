@@ -32,7 +32,10 @@
 
   --color-tint: #fdf1f1;
   --color-surface: #f4f4f4;
-  --color-muted: #6b7280;
+  /* Secondary body copy. Was #6b7280, which cleared WCAG AA on white by a hair (4.83:1)
+     and read washed-out at the small sizes it is mostly used at — service card copy, form
+     hints, listing meta. This sits at 7.6:1, comfortably AAA, without becoming body black. */
+  --color-muted: #4b5563;
 
   --color-residential: #3fa84a;
   --color-commercial: #d6338e;

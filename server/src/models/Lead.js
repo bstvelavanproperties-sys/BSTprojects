@@ -7,6 +7,7 @@ export const LEAD_TYPES = [
   "property-wanted",
   "sell-request",
   "newsletter",
+  "nri-enquiry",
 ];
 
 export const LEAD_STATUSES = [
@@ -29,6 +30,11 @@ const leadSchema = new mongoose.Schema(
     propertyTitle: { type: String, trim: true, default: "" },
     budget: { type: String, trim: true, default: "" },
     preferredTime: { type: String, trim: true, default: "" },
+
+    // Where the enquirer is based. Free text, not an enum — the point is to know
+    // which timezone to call into, and an NRI in a country we never listed is
+    // exactly the lead we least want to drop.
+    country: { type: String, trim: true, default: "" },
 
     type: { type: String, enum: LEAD_TYPES, default: "enquiry" },
     status: { type: String, enum: LEAD_STATUSES, default: "new" },

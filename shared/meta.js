@@ -6,7 +6,9 @@ import { isPriceOnRequest, priceText as priceLine } from "./money.js";
 import { defaultPropertyImage } from "./propertyImages.js";
 import { saleStage, stageLabel } from "./saleStage.js";
 
-const escapeHtml = (value) =>
+// Exported for shared/pageMeta.js, which renders the same kind of tags for the static
+// routes. One escaper, so a fix here cannot leave the other renderer behind.
+export const escapeHtml = (value) =>
   String(value ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")

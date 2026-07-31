@@ -71,6 +71,7 @@ const emptyProperty = {
   videos: "",
   amenities: "",
   featured: false,
+  nriFriendly: false,
   description: "",
 };
 
@@ -510,6 +511,16 @@ function PropertyForm({ initial, onSave, onCancel, saving, uploadsReady }) {
           <input type="checkbox" checked={form.featured} onChange={set("featured")} className="h-4 w-4 accent-brand-500" />
           <span className="text-sm font-bold text-navy-700">Show in Featured Property</span>
         </label>
+
+        <label className="flex items-center gap-2 sm:col-span-2">
+          <input type="checkbox" checked={form.nriFriendly} onChange={set("nriFriendly")} className="h-4 w-4 accent-brand-500" />
+          <span className="text-sm font-bold text-navy-700">
+            NRI-friendly{" "}
+            <span className="font-semibold text-muted">
+              — shows the badge and appears on the NRI page
+            </span>
+          </span>
+        </label>
       </div>
 
       <div className="mt-6 flex gap-3">
@@ -917,6 +928,9 @@ export default function AdminApp() {
                 ["featuredSubtitle", "Featured section subtitle"],
                 ["rentalTitle", "Rental section title"],
                 ["announcement", "Announcement"],
+                ["nriPopupTitle", "NRI popup — title (leave blank to hide the popup)"],
+                ["nriPopupBody", "NRI popup — message"],
+                ["nriPopupCta", "NRI popup — button label"],
               ].map(([key, label]) => (
                 <Field key={key} label={label}>
                   <input

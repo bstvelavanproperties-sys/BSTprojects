@@ -9,6 +9,56 @@
       "source": "/real-estate/:slug",
       "destination": "/api/share?slug=:slug"
     },
+
+    {
+      "source": "/",
+      "destination": "/api/page?path=/"
+    },
+    {
+      "source": "/properties",
+      "destination": "/api/page?path=/properties"
+    },
+    {
+      "source": "/buy",
+      "destination": "/api/page?path=/buy"
+    },
+    {
+      "source": "/rent",
+      "destination": "/api/page?path=/rent"
+    },
+    {
+      "source": "/nri",
+      "destination": "/api/page?path=/nri"
+    },
+    {
+      "source": "/services",
+      "destination": "/api/page?path=/services"
+    },
+    {
+      "source": "/find-my-property",
+      "destination": "/api/page?path=/find-my-property"
+    },
+    {
+      "source": "/affordability",
+      "destination": "/api/page?path=/affordability"
+    },
+    {
+      "source": "/property-wanted",
+      "destination": "/api/page?path=/property-wanted"
+    },
+    {
+      "source": "/faqs",
+      "destination": "/api/page?path=/faqs"
+    },
+    {
+      "source": "/about",
+      "destination": "/api/page?path=/about"
+    },
+    {
+      "source": "/contact",
+      "destination": "/api/page?path=/contact"
+    },
+
     {
       "source": "/((?!api/).*)",
       "destination": "/index.html"

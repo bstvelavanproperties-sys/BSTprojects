@@ -88,6 +88,7 @@ const raw = [
   },
   {
     slug: "new-flats-for-sale-in-virugambakkam",
+    nriFriendly: true,
     title: "New Flats for sale in Virugambakkam",
     listingType: "sale",
     propertyType: "apartment",
@@ -168,6 +169,7 @@ const raw = [
   },
   {
     slug: "plot-for-sale-in-velachery",
+    nriFriendly: true,
     title: "Plot for sale in Velachery",
     listingType: "sale",
     propertyType: "plot",
@@ -235,6 +237,7 @@ const raw = [
   },
   {
     slug: "luxury-villa-for-sale-in-ecr",
+    nriFriendly: true,
     title: "Luxury Villa for sale in ECR",
     listingType: "sale",
     propertyType: "villa",
@@ -255,6 +258,7 @@ const raw = [
   },
   {
     slug: "gated-villa-for-sale-in-coimbatore",
+    nriFriendly: true,
     title: "Gated Community Villa for sale in Coimbatore",
     listingType: "sale",
     propertyType: "villa",
@@ -275,6 +279,7 @@ const raw = [
   },
   {
     slug: "commercial-space-for-sale-in-guindy",
+    nriFriendly: true,
     title: "Commercial Space for sale in Guindy",
     listingType: "sale",
     propertyType: "commercial-space",
@@ -292,6 +297,7 @@ const raw = [
   },
   {
     slug: "apartment-for-sale-in-bangalore-whitefield",
+    nriFriendly: true,
     title: "3 BHK Apartment for sale in Whitefield",
     listingType: "sale",
     propertyType: "apartment",
@@ -477,6 +483,7 @@ export const properties = raw.map((item, index) => ({
   state: "Tamil Nadu",
   verified: true,
   featured: false,
+  nriFriendly: false,
   bedrooms: 0,
   bathrooms: 0,
   pricePrefix: "",
@@ -501,6 +508,13 @@ export const defaultContent = {
   featuredTitle: "Featured Property",
   featuredSubtitle: "Find a property that's right for you.",
   rentalTitle: "Discover Rental Properties",
+  // Clearing nriPopupTitle in the admin panel is what switches the homepage prompt
+  // off — see the note on the SiteContent schema. This object also doubles as the
+  // PATCH /content whitelist, so a key absent here can never be saved.
+  nriPopupTitle: "Buying from abroad?",
+  nriPopupBody:
+    "We handle title checks, power of attorney and site visits for NRI buyers — and look after the property once you fly home.",
+  nriPopupCta: "Explore NRI properties",
   phone: "+91 94441 92708",
   whatsapp: "919444192708",
 };

@@ -57,6 +57,12 @@ const propertySchema = new mongoose.Schema(
     amenities: [{ type: String, trim: true }],
     featured: { type: Boolean, default: false, index: true },
     verified: { type: Boolean, default: true },
+
+    // Suited to a buyer living abroad — clear title, a builder or seller used to
+    // remote paperwork, and something we can manage once the owner flies home.
+    // A curation flag set by the agency, not a property of the building, which is
+    // why it is a plain boolean rather than anything derived.
+    nriFriendly: { type: Boolean, default: false, index: true },
   },
   { timestamps: true },
 );

@@ -30,6 +30,7 @@ router.post("/", requireDatabase, async (request, response) => {
     propertyTitle: cleanText(request.body.propertyTitle, 200),
     budget: cleanText(request.body.budget, 60),
     preferredTime: cleanText(request.body.preferredTime, 40),
+    country: cleanText(request.body.country, 60),
     type: LEAD_TYPES.includes(request.body.type) ? request.body.type : "enquiry",
     status: "new",
     source: cleanText(request.body.source, 80) || "Direct",

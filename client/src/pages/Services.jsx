@@ -2,14 +2,12 @@ import { Link } from "react-router-dom";
 import brand, { platformCards, services } from "../config/brand.js";
 import PageHero from "../components/PageHero.jsx";
 import SectionHeading from "../components/SectionHeading.jsx";
+import { pageMetaFor } from "@bstv/shared/pageMeta.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { iconMap } from "../components/iconMaps.js";
 
 export default function Services() {
-  usePageMeta({
-    title: `Our Services — ${brand.name}`,
-    description: `${brand.slogans.manage} Property management, rental management, maintenance, documentation and home loan support.`,
-  });
+  usePageMeta(pageMetaFor("/services"));
 
   return (
     <>

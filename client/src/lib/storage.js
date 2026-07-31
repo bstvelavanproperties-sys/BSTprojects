@@ -100,6 +100,7 @@ export const exportLeadsCsv = (leads) => {
     "propertyTitle",
     "budget",
     "preferredTime",
+    "country",
     "message",
     "source",
     "utmSource",
@@ -141,8 +142,14 @@ export const PROPERTY_CSV_FIELDS = [
   "images",
   "videos",
   "featured",
+  "nriFriendly",
   "description",
 ];
+
+// Columns the importer must turn back into real booleans. The server does
+// `Boolean(body.featured)`, and Boolean("false") is true — so a column left as a
+// string would switch the flag ON for every row that explicitly said false.
+const CSV_BOOLEAN_FIELDS = new Set(["featured", "nriFriendly"]);
 
 export const exportPropertiesCsv = (properties) => {
   const cell = (property, field) =>
@@ -213,7 +220,7 @@ export const parseCsv = (text) => {
         const value = cells[index] ?? "";
         if (arrayFields.has(key)) return [key, value ? value.split("|").filter(Boolean) : []];
         if (numberFields.has(key)) return [key, Number(value) || 0];
-        if (key === "featured") return [key, value === "true"];
+        if (CSV_BOOLEAN_FIELDS.has(key)) return [key, value === "true"];
         return [key, value];
       }),
     ),

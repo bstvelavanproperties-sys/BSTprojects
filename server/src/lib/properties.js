@@ -87,4 +87,5 @@ export const normaliseProperty = (body) => ({
   amenities: toList(body.amenities).map((a) => cleanText(a, 60)).filter(Boolean),
   featured: Boolean(body.featured),
   verified: body.verified !== false,
+  nriFriendly: Boolean(body.nriFriendly),
 });

@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import brand from "../config/brand.js";
 import { fetchProperties } from "../lib/api.js";
 import { formatFullINR, formatINR } from "../lib/format.js";
 import { track } from "../lib/storage.js";
 import PropertyCard, { PropertyCardSkeleton } from "../components/PropertyCard.jsx";
+import { pageMetaFor } from "@bstv/shared/pageMeta.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { ArrowRight } from "../components/Icons.jsx";
 
@@ -50,11 +50,7 @@ export default function Affordability() {
   const [years, setYears] = useState(20);
   const [matches, setMatches] = useState({ items: [], total: 0, loading: true });
 
-  usePageMeta({
-    title: `What can I afford? — ${brand.name}`,
-    description:
-      "Tell us what you can pay each month and we'll show you the properties that actually fit your budget.",
-  });
+  usePageMeta(pageMetaFor("/affordability"));
 
   const loan = useMemo(() => loanFromEmi(emi, rate, years), [emi, rate, years]);
   const budget = Math.round(loan + savings);

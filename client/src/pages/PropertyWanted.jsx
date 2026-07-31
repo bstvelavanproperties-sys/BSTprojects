@@ -1,13 +1,10 @@
-import brand from "../config/brand.js";
 import EnquiryForm from "../components/EnquiryForm.jsx";
 import PageHero from "../components/PageHero.jsx";
+import { pageMetaFor } from "@bstv/shared/pageMeta.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
 
 export default function PropertyWanted() {
-  usePageMeta({
-    title: `Property Wanted — ${brand.name}`,
-    description: "Tell us what you're looking for and we'll find it for you.",
-  });
+  usePageMeta(pageMetaFor("/property-wanted"));
 
   return (
     <>

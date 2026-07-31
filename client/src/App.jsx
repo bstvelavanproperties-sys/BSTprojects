@@ -9,6 +9,7 @@ import Matchmaker from "./pages/Matchmaker.jsx";
 import Affordability from "./pages/Affordability.jsx";
 import Services from "./pages/Services.jsx";
 import PropertyWanted from "./pages/PropertyWanted.jsx";
+import Nri from "./pages/Nri.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
 import Faqs from "./pages/Faqs.jsx";
@@ -21,20 +22,28 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="properties" element={<Listings heading="All Properties" />} />
+          <Route
+            path="properties"
+            element={<Listings heading="All Properties" metaPath="/properties" />}
+          />
           <Route
             path="buy"
-            element={<Listings fixedListingType="sale" heading="Properties for Sale" />}
+            element={
+              <Listings fixedListingType="sale" heading="Properties for Sale" metaPath="/buy" />
+            }
           />
           <Route
             path="rent"
-            element={<Listings fixedListingType="rent" heading="Properties for Rent" />}
+            element={
+              <Listings fixedListingType="rent" heading="Properties for Rent" metaPath="/rent" />
+            }
           />
           <Route path="real-estate/:slug" element={<PropertyDetail />} />
           <Route path="find-my-property" element={<Matchmaker />} />
           <Route path="affordability" element={<Affordability />} />
           <Route path="services" element={<Services />} />
           <Route path="property-wanted" element={<PropertyWanted />} />
+          <Route path="nri" element={<Nri />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="faqs" element={<Faqs />} />

@@ -90,6 +90,40 @@ export const services = [
   },
 ];
 
+// What we actually do for a buyer or owner living abroad.
+//
+// Scope wording matters here as much as it does for the loan service above: we
+// coordinate, verify and represent — we are not the buyer's tax adviser and we do not
+// move their money. Stating a FEMA or RBI rule as fact on a property site is advice we
+// are not licensed to give, so every financial line points at their own CA instead.
+export const nriServices = [
+  {
+    icon: "doc",
+    title: "Title checks & documentation",
+    copy: "Encumbrance certificate, parent documents and approvals verified by our legal team before you commit a rupee.",
+  },
+  {
+    icon: "shield",
+    title: "Power of attorney",
+    copy: "We prepare the POA and walk your family or our representative through registration, so you don't need to fly down to sign.",
+  },
+  {
+    icon: "plane",
+    title: "Video & proxy site visits",
+    copy: "A walkthrough on video call at a time that suits your timezone, plus an honest report on the locality and the neighbours.",
+  },
+  {
+    icon: "bank",
+    title: "Payment & paperwork coordination",
+    copy: "We work alongside your CA and bank on the NRE/NRO paperwork and keep the registration moving while you're away.",
+  },
+  {
+    icon: "building",
+    title: "Management after you buy",
+    copy: "Tenants, rent collection, upkeep and property tax handled year-round — the same service our resident owners get.",
+  },
+];
+
 // Buy / sell / rent checklists — from the flyer.
 export const platformCards = [
   {

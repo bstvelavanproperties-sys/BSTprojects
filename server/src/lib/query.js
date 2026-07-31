@@ -54,6 +54,10 @@ export const normaliseQuery = (query = {}) => {
     maxPrice: priceScoped ? maxPrice : undefined,
     priceIgnored: !priceScoped && (minPrice !== undefined || maxPrice !== undefined),
     featured: query.featured === "true" ? true : undefined,
+    // Opt-in like `featured`: absent means "don't care", never "only the ones that
+    // aren't". Nothing should hide a listing from an ordinary search because it also
+    // happens to suit an overseas buyer.
+    nriFriendly: query.nriFriendly === "true" ? true : undefined,
     sort: SORTS[query.sort] ? query.sort : "newest",
     page: Math.max(1, num(query.page) || 1),
     limit: Math.min(48, Math.max(1, num(query.limit) || 12)),
@@ -70,6 +74,7 @@ export const buildMongoFilter = (params) => {
   if (params.label) filter.labels = params.label;
   if (params.bedrooms !== undefined) filter.bedrooms = { $gte: params.bedrooms };
   if (params.featured) filter.featured = true;
+  if (params.nriFriendly) filter.nriFriendly = true;
 
   // Status, in precedence order:
   //   an explicit ?status=  -> exactly that
@@ -98,6 +103,7 @@ export const matchesInMemory = (item, params) => {
   if (params.propertyType && item.propertyType !== params.propertyType) return false;
   if (params.label && !(item.labels || []).includes(params.label)) return false;
   if (params.featured && !item.featured) return false;
+  if (params.nriFriendly && !item.nriFriendly) return false;
   if (params.bedrooms !== undefined && Number(item.bedrooms || 0) < params.bedrooms) return false;
   // Mirrors the three-way rule in buildMongoFilter — the two paths must agree.
   const status = item.status || "available";
