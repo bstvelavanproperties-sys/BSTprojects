@@ -1,4 +1,5 @@
 import {
+  Bank,
   Building,
   Doc,
   Home,
@@ -23,6 +24,7 @@ export const iconMap = {
   building: Building,
   rupee: Rupee,
   tools: Tools,
+  bank: Bank,
   "home-buy": Home,
   "home-sell": Building,
   "home-rent": Home,

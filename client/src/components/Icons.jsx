@@ -184,6 +184,14 @@ export const Rupee = (p) => (
   </Svg>
 );
 
+export const Bank = (p) => (
+  <Svg {...p}>
+    <path d="M3 9.5 12 4l9 5.5" />
+    <path d="M5.5 9.5V18M10 9.5V18M14 9.5V18M18.5 9.5V18" />
+    <path d="M3 21h18" />
+  </Svg>
+);
+
 export const Tools = (p) => (
   <Svg {...p}>
     <path d="M14.5 6.5a3.5 3.5 0 0 0 4.6 4.6L21 13l-8 8-2-2 1.9-1.9a3.5 3.5 0 0 0-4.6-4.6L6.5 11 3 7.5 6.5 4l3.5 3.5Z" />

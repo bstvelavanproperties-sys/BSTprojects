@@ -4,9 +4,9 @@ import brand, { propertyTypes } from "../config/brand.js";
 import { fetchCities, fetchProperties, submitLead } from "../lib/api.js";
 import { track } from "../lib/storage.js";
 import PropertyCard from "../components/PropertyCard.jsx";
-import { whatsappHref } from "../lib/whatsapp.js";
+import { whatsappHref, whatsappNumber } from "../lib/whatsapp.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
-import { ArrowRight, ChevronLeft, Search, WhatsApp } from "../components/Icons.jsx";
+import { ArrowRight, ChevronLeft, Phone, Search, WhatsApp } from "../components/Icons.jsx";
 
 const BUDGETS = {
   sale: [
@@ -368,15 +368,47 @@ export default function Matchmaker() {
                   </button>
                 </>
               ) : (
-                <div className="card mb-10 p-12 text-center">
+                // A dead end is the moment someone is most likely to leave, so the
+                // fallback is a person to talk to — the numbers, not another link.
+                <div className="card mb-10 p-8 text-center sm:p-12">
                   <p className="mb-2 text-lg font-extrabold text-navy-700">
                     Nothing on the site matches that yet
                   </p>
-                  <p className="mb-6 text-sm text-muted">
-                    A good part of our inventory never gets listed publicly. Leave your details and
-                    we'll search on your behalf.
+                  <p className="mx-auto mb-7 max-w-md text-sm text-muted">
+                    A good part of our inventory never gets listed publicly. Call or WhatsApp us
+                    with this brief and we'll search on your behalf.
                   </p>
-                  <Link to="/properties" className="btn-outline">
+
+                  <div className="mx-auto mb-6 grid max-w-lg gap-3 sm:grid-cols-2">
+                    <a
+                      href={`tel:${brand.phones[0].replace(/\s/g, "")}`}
+                      onClick={() => track("matchmaker_empty_call")}
+                      className="btn-brand w-full flex-col gap-1 py-4"
+                    >
+                      <span className="flex items-center gap-2 text-xs font-bold tracking-wide uppercase opacity-90">
+                        <Phone size={16} /> Call
+                      </span>
+                      <span className="text-base font-extrabold">{brand.phones[0]}</span>
+                    </a>
+
+                    <a
+                      href={whatsappHref(whatsappText())}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      onClick={() => track("matchmaker_empty_whatsapp")}
+                      className="btn w-full flex-col gap-1 bg-chat py-4 text-white hover:brightness-95"
+                    >
+                      <span className="flex items-center gap-2 text-xs font-bold tracking-wide uppercase opacity-90">
+                        <WhatsApp size={16} /> WhatsApp
+                      </span>
+                      <span className="text-base font-extrabold">{whatsappNumber}</span>
+                    </a>
+                  </div>
+
+                  <Link
+                    to="/properties"
+                    className="text-sm font-bold text-brand-500 hover:underline"
+                  >
                     Browse everything instead
                   </Link>
                 </div>

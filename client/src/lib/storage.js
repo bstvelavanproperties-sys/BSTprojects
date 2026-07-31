@@ -3,7 +3,6 @@
 
 const KEYS = {
   saved: "bstv-saved",
-  loanPrompt: "bstv-loan-prompt-dismissed",
 };
 
 const read = (key, fallback) => {
@@ -65,22 +64,6 @@ export const track = (name, properties = {}) => {
   window.dataLayer.push({ event: name, ...properties });
   if (typeof window.gtag === "function") window.gtag("event", name, properties);
 };
-
-// ---------------------------------------------------------------------------
-// Home-loan prompt
-// ---------------------------------------------------------------------------
-// Dismissal is snoozed rather than permanent: someone browsing in March who was not
-// ready to talk about finance may well be ready in June. Storing the timestamp rather
-// than a boolean means the window below is the only thing to change if it nags.
-export const LOAN_PROMPT_SNOOZE_DAYS = 30;
-
-export const isLoanPromptSnoozed = () => {
-  const dismissedAt = read(KEYS.loanPrompt, 0);
-  if (!dismissedAt) return false;
-  return Date.now() - dismissedAt < LOAN_PROMPT_SNOOZE_DAYS * 24 * 60 * 60 * 1000;
-};
-
-export const snoozeLoanPrompt = () => write(KEYS.loanPrompt, Date.now());
 
 export const getSaved = () => read(KEYS.saved, []);
 

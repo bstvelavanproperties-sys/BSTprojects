@@ -6,7 +6,6 @@ import WhatsAppFab from "./WhatsAppFab.jsx";
 import ScrollTopFab from "./ScrollTopFab.jsx";
 import CompareBar from "./CompareBar.jsx";
 import ComparePanel from "./ComparePanel.jsx";
-import HomeLoanPrompt from "./HomeLoanPrompt.jsx";
 import { track } from "../lib/storage.js";
 
 // The chrome every public route renders inside. Extracted from App.jsx, which now
@@ -37,7 +36,6 @@ export default function Layout() {
       <ScrollTopFab />
       <CompareBar />
       <ComparePanel />
-      <HomeLoanPrompt />
     </div>
   );
 }

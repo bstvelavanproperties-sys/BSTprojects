@@ -9,11 +9,15 @@ export default function ServicesSection() {
       <div className="container-page">
         <SectionHeading title="Our Services" subtitle={brand.slogans.manage} />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Wrapping flex rather than a grid so an odd trailing card centres itself. */}
+        <div className="flex flex-wrap justify-center gap-6">
           {services.map((service) => {
             const Icon = iconMap[service.icon];
             return (
-              <article key={service.slug} className="card p-7 text-center">
+              <article
+                key={service.slug}
+                className="card w-full p-7 text-center sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)]"
+              >
                 <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500 text-white">
                   <Icon size={26} />
                 </span>

@@ -8,7 +8,7 @@ import { iconMap } from "../components/iconMaps.js";
 export default function Services() {
   usePageMeta({
     title: `Our Services — ${brand.name}`,
-    description: `${brand.slogans.manage} Property management, rental management, maintenance and documentation support.`,
+    description: `${brand.slogans.manage} Property management, rental management, maintenance, documentation and home loan support.`,
   });
 
   return (
@@ -16,11 +16,16 @@ export default function Services() {
       <PageHero title="Our Services" subtitle={brand.slogans.manage} />
 
       <section className="py-16">
-        <div className="container-page grid gap-6 sm:grid-cols-2">
+        {/* Wrapping flex rather than a grid: with an odd number of services the last
+            card centres itself instead of stranding a gap at the end of the row. */}
+        <div className="container-page flex flex-wrap justify-center gap-6">
           {services.map((service) => {
             const Icon = iconMap[service.icon];
             return (
-              <article key={service.slug} className="card flex gap-5 p-7">
+              <article
+                key={service.slug}
+                className="card flex w-full gap-5 p-7 sm:w-[calc(50%-0.75rem)]"
+              >
                 <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand-500 text-white">
                   <Icon size={26} />
                 </span>

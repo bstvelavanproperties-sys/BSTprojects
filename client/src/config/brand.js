@@ -80,6 +80,14 @@ export const services = [
     title: "Documentation Support",
     copy: "Registration, title checks and paperwork prepared and verified by our legal team.",
   },
+  // Wording stays in step with the FAQ answer and the home-loan prompt: we introduce
+  // and guide, we do not lend. Claiming otherwise would set the wrong expectation.
+  {
+    slug: "loan-finance-support",
+    icon: "bank",
+    title: "Loan & Finance Support",
+    copy: "Introductions to bank managers who handle property loans, eligibility guidance and help with the paperwork.",
+  },
 ];
 
 // Buy / sell / rent checklists — from the flyer.

@@ -8,6 +8,7 @@ import Gallery from "../components/Gallery.jsx";
 import EmiCalculator from "../components/EmiCalculator.jsx";
 import EnquiryForm from "../components/EnquiryForm.jsx";
 import PriceOnRequest from "../components/PriceOnRequest.jsx";
+import LoanToast from "../components/LoanToast.jsx";
 import SaleStageMark from "../components/SaleStageMark.jsx";
 import PropertyCard from "../components/PropertyCard.jsx";
 import { whatsappHref } from "../lib/whatsapp.js";
@@ -322,6 +323,9 @@ export default function PropertyDetail() {
           </div>
         </section>
       )}
+
+      {/* Only on a sale: a loan offer against a monthly rent makes no sense. */}
+      {property.listingType === "sale" && <LoanToast property={property} />}
     </>
   );
 }

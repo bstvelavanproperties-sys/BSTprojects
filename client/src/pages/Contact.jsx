@@ -2,13 +2,18 @@ import brand from "../config/brand.js";
 import EnquiryForm from "../components/EnquiryForm.jsx";
 import PageHero from "../components/PageHero.jsx";
 import { usePageMeta } from "../lib/usePageMeta.js";
-import { Mail, MapPin, Phone } from "../components/Icons.jsx";
+import { track } from "../lib/storage.js";
+import { whatsappHref, whatsappNumber } from "../lib/whatsapp.js";
+import { Mail, MapPin, Phone, WhatsApp } from "../components/Icons.jsx";
 
 export default function Contact() {
   usePageMeta({
     title: `Contact Us — ${brand.name}`,
     description: `Call ${brand.phones[0]} or send an enquiry. ${brand.slogans.find}`,
   });
+
+  const phone = brand.phones[0];
+  const whatsappMessage = `Hi ${brand.name}, I'd like to talk about a property.`;
 
   return (
     <>
@@ -74,18 +79,54 @@ export default function Contact() {
             </div>
           </div>
 
-          <EnquiryForm
-            type="callback"
-            title="Send us a message"
-            subtitle="Tell us what you're looking for and we'll call you back."
-            extraFields={[
-              {
-                name: "preferredTime",
-                placeholder: "Best time to call",
-                options: ["Morning", "Afternoon", "Evening", "Weekend"],
-              },
-            ]}
-          />
+          <div className="space-y-6">
+            {/* Calling and WhatsApp reach us faster than the form, so they lead the column. */}
+            <div className="card p-7">
+              <h3 className="mb-1 text-xl font-extrabold text-navy-700">Talk to us now</h3>
+              <p className="mb-5 text-sm text-muted">
+                The quickest way to reach us — call or message and we&apos;ll answer.
+              </p>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <a
+                  href={`tel:${phone.replace(/\s/g, "")}`}
+                  onClick={() => track("contact_call")}
+                  className="btn-brand w-full flex-col gap-1 py-4"
+                >
+                  <span className="flex items-center gap-2 text-xs font-bold tracking-wide uppercase opacity-90">
+                    <Phone size={16} /> Call
+                  </span>
+                  <span className="text-base font-extrabold">{phone}</span>
+                </a>
+
+                <a
+                  href={whatsappHref(whatsappMessage)}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  onClick={() => track("contact_whatsapp")}
+                  className="btn w-full flex-col gap-1 bg-chat py-4 text-white hover:brightness-95"
+                >
+                  <span className="flex items-center gap-2 text-xs font-bold tracking-wide uppercase opacity-90">
+                    <WhatsApp size={16} /> WhatsApp
+                  </span>
+                  <span className="text-base font-extrabold">{whatsappNumber}</span>
+                </a>
+              </div>
+            </div>
+
+            <EnquiryForm
+              type="callback"
+              title="Send us a message"
+              subtitle="Tell us what you're looking for and we'll call you back."
+              extraFields={[
+                {
+                  name: "preferredTime",
+                  placeholder: "Best time to call",
+                  options: ["Morning", "Afternoon", "Evening", "Weekend"],
+                },
+              ]}
+            />
+          </div>
         </div>
       </section>
     </>
