@@ -15,10 +15,7 @@ const FADE_MS = 380;
 
 // Baseline animation schedule, expressed against FIRST_MS and scaled for route changes.
 const BASE = {
-  circle: { dur: 1100, delay: 120 },
-  v: { dur: 700, delay: 260 },
-  arrow: { dur: 460, delay: 760 },
-  head: { dur: 300, delay: 1080 },
+  mark: { dur: 800, delay: 120 },
   name: { dur: 600, delay: 700 },
   tagline: { dur: 600, delay: 880 },
   bar: 45,
@@ -116,52 +113,15 @@ export default function Preloader() {
         ))}
       </div>
 
-      <svg key={run} viewBox="0 0 120 120" className="mb-7 h-24 w-24" aria-hidden="true">
-        <circle
-          cx="60"
-          cy="60"
-          r="54"
-          fill="none"
-          stroke="#dc1c24"
-          strokeWidth="3"
-          strokeDasharray="340"
-          strokeDashoffset="340"
-          style={{ animation: `preload-draw ${at(BASE.circle)} forwards` }}
-        />
-        {/* The V */}
-        <path
-          d="M30 38 55 92 68 62"
-          fill="none"
-          stroke="#ffffff"
-          strokeWidth="9"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeDasharray="130"
-          strokeDashoffset="130"
-          style={{ animation: `preload-draw ${at(BASE.v)} forwards` }}
-        />
-        {/* Growth arrow */}
-        <path
-          d="M66 66 92 30"
-          fill="none"
-          stroke="#dc1c24"
-          strokeWidth="9"
-          strokeLinecap="round"
-          strokeDasharray="46"
-          strokeDashoffset="46"
-          style={{ animation: `preload-draw ${at(BASE.arrow)} forwards` }}
-        />
-        <path
-          d="M78 28h16v16"
-          fill="none"
-          stroke="#dc1c24"
-          strokeWidth="9"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0"
-          style={{ animation: `preload-fade ${at(BASE.head)} forwards` }}
-        />
-      </svg>
+      {/* The real monogram, on the white tile it is drawn for — the red reads as muted
+          maroon straight on navy. */}
+      <div
+        key={run}
+        className="mb-7 flex h-24 w-24 items-center justify-center rounded-2xl bg-white p-3 opacity-0 shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
+        style={{ animation: `preload-mark ${at(BASE.mark)} forwards` }}
+      >
+        <img src={brand.logo} alt="" className="h-full w-full object-contain" />
+      </div>
 
       <p
         key={`n-${run}`}

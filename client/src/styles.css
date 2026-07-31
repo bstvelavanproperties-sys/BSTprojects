@@ -126,14 +126,15 @@
 /* --------------------------------------------------------------------------
    Motion. Every animation here is disabled by the reduced-motion block below.
 -------------------------------------------------------------------------- */
-@keyframes preload-draw {
-  to {
-    stroke-dashoffset: 0;
+/* The logo tile settles in rather than being drawn — it is a fixed image now. */
+@keyframes preload-mark {
+  from {
+    opacity: 0;
+    transform: scale(0.86) translateY(8px);
   }
-}
-@keyframes preload-fade {
   to {
     opacity: 1;
+    transform: none;
   }
 }
 @keyframes preload-up {
