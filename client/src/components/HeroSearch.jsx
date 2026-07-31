@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { propertyLabels, propertyTypes } from "../config/brand.js";
 import { fetchCities } from "../lib/api.js";
-import { cityOptions } from "../lib/cityOptions.js";
 import { track } from "../lib/storage.js";
 import { ChevronDown, Home, MapPin, Search, Sliders } from "./Icons.jsx";
 
@@ -100,7 +99,7 @@ export default function HeroSearch() {
             placeholder="All Cities"
             value={form.city}
             onChange={set("city")}
-            options={cityOptions(cities)}
+            options={cities.map((row) => ({ value: row.city, label: `${row.city} (${row.count})` }))}
           />
 
           <Select

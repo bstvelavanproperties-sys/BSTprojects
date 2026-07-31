@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import brand, { propertyLabels, propertyTypes } from "../config/brand.js";
 import { fetchCities, fetchProperties } from "../lib/api.js";
-import { cityOptions } from "../lib/cityOptions.js";
 import { formatINR } from "../lib/format.js";
 import { track } from "../lib/storage.js";
 import { whatsappHref, whatsappNumber } from "../lib/whatsapp.js";
@@ -242,9 +241,9 @@ export default function Listings({ fixedListingType, heading }) {
                     onChange={(event) => update({ city: event.target.value })}
                   >
                     <option value="">All cities</option>
-                    {cityOptions(cities).map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
+                    {cities.map((row) => (
+                      <option key={row.city} value={row.city}>
+                        {row.city} ({row.count})
                       </option>
                     ))}
                   </select>
