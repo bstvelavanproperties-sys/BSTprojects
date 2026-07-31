@@ -136,6 +136,30 @@ export const platformCards = [
   },
 ];
 
+// The cities the search dropdowns offer. Chennai and the towns around it are listed
+// whether or not something is on the books there today — the visitor picks where they
+// want to buy, and an empty result hands them the phone and WhatsApp numbers. Add or
+// remove a city here and every dropdown follows.
+export const cities = [
+  "Chennai",
+  "Ambattur",
+  "Avadi",
+  "Chengalpattu",
+  "Guduvancheri",
+  "Kanchipuram",
+  "Kelambakkam",
+  "Mahabalipuram",
+  "Maraimalai Nagar",
+  "Oragadam",
+  "Pallavaram",
+  "Poonamallee",
+  "Porur",
+  "Sholinganallur",
+  "Sriperumbudur",
+  "Tambaram",
+  "Tiruvallur",
+];
+
 export const propertyTypes = [
   { slug: "plot", label: "Plot" },
   { slug: "villa", label: "Villa" },

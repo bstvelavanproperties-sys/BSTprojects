@@ -2,12 +2,21 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import brand, { propertyLabels, propertyTypes } from "../config/brand.js";
 import { fetchCities, fetchProperties } from "../lib/api.js";
+import { cityOptions } from "../lib/cityOptions.js";
 import { formatINR } from "../lib/format.js";
 import { track } from "../lib/storage.js";
+import { whatsappHref, whatsappNumber } from "../lib/whatsapp.js";
 import PropertyCard, { PropertyCardSkeleton } from "../components/PropertyCard.jsx";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { useReveal, revealDelay } from "../lib/useReveal.js";
-import { ChevronLeft, ChevronRight, Search, Sliders } from "../components/Icons.jsx";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Phone,
+  Search,
+  Sliders,
+  WhatsApp,
+} from "../components/Icons.jsx";
 
 // Sale runs ₹50L–₹6Cr; rent runs ₹15K–₹1.5L a month. One slider for both is meaningless,
 // so the bounds follow the active listing type.
@@ -233,9 +242,9 @@ export default function Listings({ fixedListingType, heading }) {
                     onChange={(event) => update({ city: event.target.value })}
                   >
                     <option value="">All cities</option>
-                    {cities.map((row) => (
-                      <option key={row.city} value={row.city}>
-                        {row.city} ({row.count})
+                    {cityOptions(cities).map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
                       </option>
                     ))}
                   </select>
@@ -390,17 +399,67 @@ export default function Listings({ fixedListingType, heading }) {
                     Try again
                   </button>
                   <a href={`tel:${brand.phones[0].replace(/\s/g, "")}`} className="btn-outline">
-                    Call {brand.phones[0]}
+                    <Phone size={18} /> {brand.phones[0]}
+                  </a>
+                  <a
+                    href={whatsappHref(
+                      `Hi ${brand.name}, I'd like to know what properties you have available.`,
+                    )}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="btn bg-chat text-white hover:brightness-95"
+                  >
+                    <WhatsApp size={18} /> WhatsApp
                   </a>
                 </div>
               </div>
             ) : (
-              <div className="card p-14 text-center">
-                <p className="mb-2 text-lg font-extrabold text-navy-700">No properties found</p>
-                <p className="mb-6 text-sm text-muted">
-                  Try widening your filters, or tell us what you're looking for.
+              // Never a dead end: a search that matched nothing is the moment to hand
+              // the visitor a person, so the numbers lead and the filters come second.
+              <div className="card p-8 text-center sm:p-14">
+                <p className="mb-2 text-lg font-extrabold text-navy-700">
+                  Nothing matches those filters
                 </p>
-                <button type="button" onClick={clearAll} className="btn-brand">
+                <p className="mx-auto mb-7 max-w-md text-sm text-muted">
+                  A good part of our inventory never gets listed publicly. Call or WhatsApp us
+                  with what you&apos;re looking for and we&apos;ll search on your behalf.
+                </p>
+
+                <div className="mx-auto mb-6 grid max-w-lg gap-3 sm:grid-cols-2">
+                  <a
+                    href={`tel:${brand.phones[0].replace(/\s/g, "")}`}
+                    onClick={() => track("listings_empty_call")}
+                    className="btn-brand w-full flex-col gap-1 py-4"
+                  >
+                    <span className="flex items-center gap-2 text-xs font-bold tracking-wide uppercase opacity-90">
+                      <Phone size={16} /> Call
+                    </span>
+                    <span className="text-base font-extrabold">{brand.phones[0]}</span>
+                  </a>
+
+                  <a
+                    href={whatsappHref(
+                      `Hi ${brand.name}, I couldn't find what I'm looking for on the site${
+                        query.city ? ` in ${query.city}` : ""
+                      }. Could you help?`,
+                    )}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    onClick={() => track("listings_empty_whatsapp")}
+                    className="btn w-full flex-col gap-1 bg-chat py-4 text-white hover:brightness-95"
+                  >
+                    <span className="flex items-center gap-2 text-xs font-bold tracking-wide uppercase opacity-90">
+                      <WhatsApp size={16} /> WhatsApp
+                    </span>
+                    <span className="text-base font-extrabold">{whatsappNumber}</span>
+                  </a>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={clearAll}
+                  className="text-sm font-bold text-brand-500 hover:underline"
+                >
                   Clear filters
                 </button>
               </div>
