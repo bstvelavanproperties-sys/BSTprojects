@@ -46,7 +46,27 @@ export default function Footer() {
 
   return (
     <footer className="bg-navy-900 text-white">
-      <div className="container-page grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="container-page pt-14">
+        <Link to="/" className="inline-flex items-center gap-3" aria-label={brand.name}>
+          <img
+            src={brand.logo}
+            alt=""
+            className="h-11 w-11 object-contain sm:h-14 sm:w-14"
+            width="56"
+            height="56"
+          />
+          <img
+            src={brand.logoWordmarkLight}
+            alt={brand.name}
+            className="h-8 w-auto object-contain sm:h-10"
+            width="1049"
+            height="188"
+          />
+        </Link>
+        <p className="mt-4 max-w-md text-sm text-white/60">{brand.promise}</p>
+      </div>
+
+      <div className="container-page grid gap-10 pt-12 pb-16 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <h3 className="mb-5 text-lg font-extrabold text-white">Office Address</h3>
           {Object.values(brand.offices).map((office) => (

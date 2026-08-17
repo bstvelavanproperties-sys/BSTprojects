@@ -33,23 +33,27 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-gray-100 bg-white">
-      <div className="container-page flex h-20 items-center justify-between gap-4">
+      {/* The bar deliberately opts out of .container-page: on a wide screen that 1280px
+          column would park the lockup 200px in from the window edge. It keeps the
+          container's padding scale so it still lines up with the page on narrow screens. */}
+      <div className="flex h-20 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        {/* The mark PNG carries ~8% padding inside its square and the wordmark crop
+            ~5%, so the two boxes are sized by eye rather than set equal. */}
         <Link to="/" className="flex shrink-0 items-center gap-3">
           <img
             src={brand.logo}
             alt=""
-            className="h-11 w-11 rounded-full object-contain"
-            width="44"
-            height="44"
+            className="h-9.5 w-9.5 rounded-full object-contain sm:h-12 sm:w-12"
+            width="48"
+            height="48"
           />
-          <span className="leading-tight">
-            <span className="block text-lg font-extrabold text-navy-700 sm:text-xl">
-              {brand.shortName}
-            </span>
-            <span className="block text-[11px] font-semibold tracking-wide text-muted">
-              Properties
-            </span>
-          </span>
+          <img
+            src={brand.logoWordmark}
+            alt={brand.name}
+            className="h-7 w-auto object-contain sm:h-9"
+            width="1049"
+            height="188"
+          />
         </Link>
 
         <nav className="hidden items-center gap-7 xl:flex" aria-label="Primary">
