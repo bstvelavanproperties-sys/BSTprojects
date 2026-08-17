@@ -155,6 +155,10 @@ export default function Footer() {
       <div className="bg-navy-900 py-4 text-center text-xs text-white/40">
         © {new Date().getFullYear()} {brand.legalName}. All rights reserved.
       </div>
+
+      <div className="bg-[#808080] py-2 text-center text-sm font-normal text-white">
+        Website Developed and maintained by Veebros Info Solutions
+      </div>
     </footer>
   );
 }
