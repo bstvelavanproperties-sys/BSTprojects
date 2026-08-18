@@ -43,6 +43,13 @@ export const brand = {
   logo: "/assets/logo-mark.png",
   // The complete lockup — mark, wordmark and tagline — for share cards and print.
   logoFull: "/assets/logo.png",
+  // Just the "BST Velavan Properties" wordmark, cropped tight out of the supplied
+  // lockup — no mark, no tagline — so the header can set the name as artwork beside
+  // the monogram instead of retyping it in a webfont.
+  logoWordmark: "/assets/logo-wordmark.png",
+  // The same wordmark knocked out for dark ground — white name, gold "Properties".
+  // The red original goes muddy on the navy footer.
+  logoWordmarkLight: "/assets/logo-wordmark-light.png",
   origin: "https://bstvelavan.com",
 };
 
