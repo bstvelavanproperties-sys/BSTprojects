@@ -35,7 +35,7 @@ Write down your API origin once and use the same string in all three places:
    not listed here.
 
 `client/vercel.json` currently allows `https://api.bstvelavan.com` and
-`https://bst-velavan-api.onrender.com`. If your API ends up anywhere else, edit it.
+`https://bst-velavan-api.onrender.com`, and `https://bstprojects.onrender.com`. If your API ends up anywhere else, edit it.
 
 ---
 
@@ -138,7 +138,7 @@ Env vars (locally these live in the same repo-root `.env` as the API's — see
 [`.env.example`](.env.example)):
 
 ```
-VITE_API_BASE_URL=https://api.bstvelavan.com   # no trailing slash
+VITE_API_BASE_URL=https://bstprojects.onrender.com   # no trailing slash
 SITE_ORIGIN=https://bstvelavan.com
 VITE_GA_MEASUREMENT_ID=G-XXXXXXX                          # optional
 ```
