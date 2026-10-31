@@ -544,6 +544,7 @@ export default function AdminApp() {
   // null while the session check is in flight — avoids flashing the login form
   // at someone who is already signed in.
   const [session, setSession] = useState(null);
+  const [sessionError, setSessionError] = useState(false);
 
   const [properties, setProperties] = useState([]);
   const [editing, setEditing] = useState(null);
@@ -571,9 +572,7 @@ export default function AdminApp() {
   useEffect(() => {
     fetchAdminSession()
       .then(setSession)
-      // An unreachable API shouldn't lock the operator out behind a login that
-      // cannot succeed — show the panel and let the individual calls report.
-      .catch(() => setSession({ configured: false, authenticated: true }));
+      .catch(() => setSessionError(true));
   }, []);
 
   const signedIn = session?.authenticated;
@@ -665,6 +664,22 @@ export default function AdminApp() {
     labels: property.labels || [],
   });
 
+  if (sessionError) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-surface p-4">
+        <div role="alert" className="card w-full max-w-sm p-7">
+          <h1 className="mb-2 text-xl font-extrabold text-navy-700">Unable to connect</h1>
+          <p className="mb-6 text-sm text-muted">
+            The admin service could not be reached. Please try again in a moment.
+          </p>
+          <button type="button" className="btn-brand" onClick={() => window.location.reload()}>
+            Try again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (session === null) {
     return <div className="flex min-h-screen items-center justify-center text-muted">Loading…</div>;
   }
@@ -691,7 +706,9 @@ export default function AdminApp() {
                     : "bg-amber-50 text-amber-700"
                 }`}
               >
-                {health.database === "connected" ? "MongoDB connected" : "Memory mode"}
+                {health.database === "connected"
+                  ? "MongoDB connected"
+                  : health.database === "memory-mode" ? "Memory mode" : "API unavailable"}
               </span>
             )}
             <Link to="/" className="text-sm font-bold text-brand-500 hover:underline">
@@ -711,7 +728,13 @@ export default function AdminApp() {
       </header>
 
       <div className="container-page py-8">
-        {health?.database !== "connected" && (
+        {health?.ok === false && (
+          <div role="alert" className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            Unable to check database status. Please refresh to try again.
+          </div>
+        )}
+
+        {health?.database === "memory-mode" && (
           <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
             <strong className="font-extrabold">Memory mode.</strong> Changes last until the server
             restarts. Set <code className="font-mono">MONGODB_URI</code> in <code className="font-mono">.env</code> for
