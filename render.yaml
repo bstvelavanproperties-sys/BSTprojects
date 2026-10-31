@@ -16,8 +16,8 @@ services:
     # API ONLY. The site itself is built and served by Vercel (see
     # client/vercel.json), so this service no longer runs a build — it does not
     # produce or serve client/dist. That also means devDependencies (vite, tailwind)
-    # are not needed here, which is why --include=dev is gone.
-    buildCommand: npm install --omit=dev
+    # are not needed here. Override the root .npmrc's build-time dev inclusion.
+    buildCommand: npm ci --include=prod --omit=dev
     startCommand: npm start
     healthCheckPath: /api/health
 

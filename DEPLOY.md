@@ -65,6 +65,26 @@ Write down your API origin once and use the same string in all three places:
 
 Deploy from `render.yaml`, then set the secret env vars in the dashboard.
 
+For an existing API service created manually, set **Root Directory** to `server`,
+**Build Command** to `npm ci --include=prod --omit=dev`, and
+**Start Command** to `npm start`. Dashboard settings must be updated manually;
+editing `render.yaml` alone does not update a service created outside a Blueprint.
+
+If intentionally serving both the frontend and API on Render, leave **Root
+Directory** blank, use **Build Command** `npm ci --include=dev && npm run build`,
+and **Start Command** `npm start`. Leave `VITE_API_BASE_URL` unset for same-origin
+API calls. The root `.npmrc` includes development dependencies during installation
+even with `NODE_ENV=production`, because Vite and Tailwind are build tools. This
+also fixes older dashboard commands such as `npm install; npm run build`; prefer
+`&&` so an installation failure stops the build. Production startup serves the
+built `client/dist` automatically.
+
+`vite: not found` means the build tools were omitted during installation. The
+API-only configuration above needs no frontend build. For a combined deployment,
+include development dependencies before building. A sitemap warning about an
+unreachable API is separate: static routes are still generated, and it does not
+cause this build failure.
+
 `render.yaml` sets `rootDir: server`, so Render installs and starts inside the server
 workspace only — it never installs Vite or Tailwind. The `@bstv/shared` dependency
 resolves as a `file:../shared` link out of the cloned repo, so nothing needs publishing.
